@@ -1,0 +1,7 @@
+/dist/*
+/html/*
+.local
+/node_moudules/**
+**/*.svg
+**/*.sh
+/public/*
