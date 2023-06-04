@@ -29,7 +29,7 @@ module.exports = {
     "no-multiple-empty-lines": ["warn", { max: 1 }],
     "no-console": process.env.Node_ENV == "production" ? "error" : "off",
     "no-debugger": process.env.Node_ENV == "production" ? "error" : "off",
-    "no-unexpect-multiline": "error",
+    "no-unexpected-multiline": "error",
     "no-useless-escape": "off",
     //typeScript(https://typescript-eslint.io/rules)
     "@typescript-eslint/no-unused-vars": "error",

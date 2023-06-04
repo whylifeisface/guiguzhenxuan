@@ -1,11 +1,7 @@
 <script setup lang="ts"></script>
-
 <template>
   <div>
-    111
-    <svg>
-      <use xlink:href="#icon-phone" fill="white"></use>
-    </svg>
+    <RouterView></RouterView>
   </div>
 </template>
 
