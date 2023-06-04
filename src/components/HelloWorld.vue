@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { ref } from "vue";
-
+import { Edit } from "@element-plus/icons-vue";
+import Test from "@/components/Test/Test.vue";
 defineProps<{ msg: string }>();
 
 const count = ref(0);
 </script>
 
 <template>
+  <Test />
   <h1>{{ msg }}</h1>
+  <el-button type="primary" :icon="Edit" size="small">hell 想我了吗</el-button>
 
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>

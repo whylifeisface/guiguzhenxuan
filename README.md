@@ -16,3 +16,31 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
    1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+   <!-- 全局注册组件 -->
+   method 1
+   app.component("SvgIcon", SvgIcon);
+   method 2
+
+//对外暴露插件 好处 把所有全局组件注册了
+import SvgIcon from '@/components/svgIcon/index.vue'
+const allGlobalComponent = {
+SvgIcon
+}
+
+export {
+insatll (app){
+Object.keys(allGlobalComponent).forEach(key => {
+app.component(key,allGlobalComponent[key])
+})
+}
+}
+
+https://fettblog.eu/typescript-better-object-keys/
+Object.keys(allGlobalComponent).forEach((key: string) => {
+app.component(
+key,
+allGlobalComponent[key as keyof typeof allGlobalComponent],
+);
+console.log(key);
+});
+},

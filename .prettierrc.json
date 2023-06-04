@@ -6,5 +6,7 @@
   "endOfLine": "auto",
   "trailingComma": "all",
   "tabWidth": 2,
-  "endofLine": "auto"
+  "endofLine": "auto",
+  "tabWidth": 2
+
 }
