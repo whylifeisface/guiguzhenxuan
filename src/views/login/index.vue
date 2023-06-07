@@ -5,23 +5,20 @@
       <el-col :span="12" :xs="24">
         <el-form
           class="login_form"
-          :model="LoginForm"
+          :model="loginForm"
           :rules="rule"
           ref="loginFormRef"
-          validate=""
         >
           <h1>Hello</h1>
           <h2>欢迎来到xx甄选</h2>
-          <el-form-item>
+          <el-form-item prop="username">
             <el-input
-              prop="username"
               :prefix-icon="User"
               v-model="loginForm.username"
             ></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input
-              prop="password"
               :prefix-icon="Lock"
               type="password"
               v-model="loginForm.password"
@@ -62,15 +59,16 @@ const loginForm = reactive<LoginForm>({
   username: "",
   password: "",
 });
-
+const loginFormRef = ref(null);
 const login = async () => {
+  // @ts-expect-error
   await loginFormRef.value?.validate();
 
   //通知仓库发请求
   try {
     loading.value = true;
     await useStore.userLogin(loginForm);
-    $router.push("/");
+    await $router.push("/");
     ElNotification({
       type: "success",
       message: `Hi,${getTime()}好`,
@@ -86,11 +84,39 @@ const login = async () => {
   }
 };
 //获得form组件实例
-const loginFormRef = ref("loginFormRef");
-
+// const validatorUserName = (rule, value, callBack) => {
+//   // 数组校验对象 表单内容 函数
+//   if (/^\d{5,10}$/.test(value)) {
+//     callBack();
+//   } else {
+//     callBack(new Error("长度为5"));
+//   }
+// };
+const validatePassword = (rule, value, callback) => {
+  if (value.length > 4) {
+    callback();
+  } else {
+    callback(new Error("长度大于4"));
+  }
+};
 const rule = reactive<FormRules>({
-  username: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
-  password: [{ require: true, message: "密码不能少于8位", trigger: "blur" }],
+  username: [
+    { required: true, message: "用户名不能为空", trigger: "blur" },
+    // { trigger: "blur", validator: validatorUserName },
+  ],
+  password: [
+    {
+      require: true,
+      min: 4,
+      max: 15,
+      message: "密码不能少于8位",
+      trigger: "blur",
+    },
+    {
+      trigger: "blur",
+      validator: validatePassword,
+    },
+  ],
 });
 // const message = ref("");
 //获得时间 判断时间是早上还是下午还是晚上
@@ -100,7 +126,8 @@ const rule = reactive<FormRules>({
 .login_container {
   width: 100%;
   height: 100vh;
-  background: url("D:\\newProject\\project\\src\\assets\\images\\background.jpg") no-repeat;
+  background: url("D:\\newProject\\project\\src\\assets\\images\\background.jpg")
+    no-repeat;
   background-size: cover;
 
   .login_form {

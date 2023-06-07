@@ -5,12 +5,15 @@ import type { LoginForm } from "@/api/type";
 import { LoginResponseData } from "@/api/type";
 import { UserState } from "./types/types";
 import { GET_TOKEN, SET_TOKEN } from "../../utils/token.ts";
+//引入常量路由
+import { constantRoute } from "@/router/route.ts";
 
 const useUserStore = defineStore("User", {
   //
   state: (): UserState => {
     return {
       token: GET_TOKEN(),
+      menuRoutes: constantRoute, // 存储生成菜单需要的数组 route
     };
   },
   actions: {

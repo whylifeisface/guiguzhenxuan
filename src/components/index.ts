@@ -1,5 +1,7 @@
 //对外暴露插件
 import SvgIcon from "@/components/svgIcon/index.vue";
+//引入element plus 图标
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 const allGlobalComponent = {
   SvgIcon,
 };
@@ -10,7 +12,6 @@ console.log(SvgIcon);
 //     console.log(key);
 //   });
 // const A = {
-
 // };
 
 export default {
@@ -21,7 +22,9 @@ export default {
         key,
         allGlobalComponent[key as keyof typeof allGlobalComponent],
       );
-
+      for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+        app.component(key, component);
+      }
       console.log(key);
     });
   },

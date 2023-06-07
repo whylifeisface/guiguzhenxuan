@@ -16,21 +16,23 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
    1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-##   <!-- 全局注册组件 -->
-   method 1
 
-   ``
-   app.component("SvgIcon", SvgIcon);
-   ``
+## <!-- 全局注册组件 -->
 
-   method 2
+method 1
 
-// 对外暴露插件   好处   把所有全局组件注册了
+` app.component("SvgIcon", SvgIcon);
+`
+
+method 2
+
+// 对外暴露插件 好处 把所有全局组件注册了
+
 ```js
-import SvgIcon from '@/components/svgIcon/index.vue'
+import SvgIcon from "@/components/svgIcon/index.vue";
 const allGlobalComponent = {
-SvgIcon
-}
+  SvgIcon,
+};
 ```
 
 ```js
@@ -42,7 +44,9 @@ app.component(key,allGlobalComponent[key])
 }
 }
 ```
+
 ## Ts Object.key foreach 报错
+
 [refer](https://fettblog.eu/typescript-better-object-keys/)
 
 ```
@@ -55,7 +59,9 @@ console.log(key);
 });
 },
 ```
+
 ## tsconfig.json alias
+
 ```
 {
 "compilerOptions": {
@@ -66,14 +72,17 @@ console.log(key);
 }
 }
 ```
+
 **重点**
 
-"@/*" : "./src/*"
+"@/_" : "./src/_"
 
 "baseUrl" : "."
 
-## ts 不能识别 .vue文件
-创建 .d.ts文件写入
+## ts 不能识别 .vue 文件
+
+创建 .d.ts 文件写入
+
 ```
 ///  <reference types="vite/client" />
 
@@ -87,5 +96,12 @@ declare module "*.vue" {
   export default component;
 }
 ```
-根据 `tsconfig.json` including 值为 /src/**/.d.ts
-在src文件夹下创建
+
+根据 `tsconfig.json` including 值为 /src/\*\*/.d.ts
+在 src 文件夹下创建
+
+    //防止main撑开container
+    overflow: auto;
+
+<!--            //递归组件-->
+            <Menu :menu-list="item.children"></Menu>
