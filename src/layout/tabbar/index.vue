@@ -1,34 +1,38 @@
 <script setup lang="ts">
 import Breadcrumbe from "@/layout/tabbar/breadcrumb/index.vue";
+import { useLayoutSettingStore } from "@/store/module/setting.ts";
+import { Expand, Fold } from "@element-plus/icons-vue";
+import Icon from "@/layout/tabbar/icon/index.vue";
+
+const layoutSettingStore = useLayoutSettingStore();
+// const fold = layoutSettingStore.fold;
+// import { Expand, Fold } from "@element-plus/icons-vue";
+// const fold = ref(false);
+const changeIcon = () => {
+  console.log(123);
+  layoutSettingStore.fold = !layoutSettingStore.fold;
+  console.log(layoutSettingStore.fold);
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "Tabbar",
+};
 </script>
 
 <template>
   <div class="tab_bar">
     <div class="tab_bar_left">
-      <el-icon>
-        <Expand />
+      <el-icon @click="changeIcon">
+        <!--        已经全局引入-->
+        <Component :is="layoutSettingStore.fold ? Expand : Fold" />
       </el-icon>
       <!--    左侧图标和 breadcrumb-->
       <Breadcrumbe />
     </div>
     <div class="tab_bar_right">
-      <el-button size="small" icon="Refresh" circle />
-      <el-button size="small" icon="FullScreen" circle />
-      <el-button size="small" icon="Setting" circle />
-      <img src="/public/logo.png" alt="" style="width: 24px; height: 24px" />
-      <el-dropdown>
-        <span>
-          admin
-          <el-icon>
-            <arrow-down></arrow-down>
-          </el-icon>
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item>退出登录</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+      <Icon />
     </div>
   </div>
 </template>

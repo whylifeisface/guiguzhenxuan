@@ -66,6 +66,7 @@ const route: RouteRecordRaw[] = [
   {
     path: "/acl",
     component: () => import("@/layout/index.vue"),
+    redirect: "/acl/user",
     meta: {
       icon: "Lock",
       title: "权限管理",
@@ -93,6 +94,7 @@ const route: RouteRecordRaw[] = [
     path: "/product",
     component: import("@/layout/index.vue"),
     name: "Product",
+    redirect: "/product/trademark",
     meta: {
       title: "商品管理",
       hidden: false,

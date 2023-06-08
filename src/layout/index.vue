@@ -3,18 +3,23 @@ import logo from "@/layout/logo/index.vue";
 import Menu from "@/layout/menu/index.vue";
 import Main from "@/layout/main/index.vue";
 import TabBar from "@/layout/tabbar/index.vue";
-
+import { useLayoutSettingStore } from "@/store/module/setting.ts";
 import { useUserStore } from "@/store/module/user.ts";
+
 const userStore = useUserStore();
+const layoutSettingStore = useLayoutSettingStore();
 </script>
 
 <template>
   <div class="layout_container">
-    <div class="layout_slider">
+    <div class="layout_slider" :class="{ fold_class: layoutSettingStore.fold }">
       <logo></logo>
       <!--      展示菜单-->
       <el-scrollbar class="scrollbar">
+        <!--        TODO collapse不生效-->
         <el-menu
+          mode="vertical"
+          :collapse="layoutSettingStore.fold"
           background-color="#001529"
           text-color="white"
           active-text-color="cyan"
@@ -24,10 +29,14 @@ const userStore = useUserStore();
         </el-menu>
       </el-scrollbar>
     </div>
-    <div class="layout_tab_bar">
+
+    <div
+      class="layout_tab_bar"
+      :class="{ fold_class: layoutSettingStore.fold }"
+    >
       <TabBar></TabBar>
     </div>
-    <div class="layout_main">
+    <div class="layout_main" :class="{ fold_class: layoutSettingStore.fold }">
       <Main />
     </div>
   </div>
@@ -38,6 +47,7 @@ const userStore = useUserStore();
   width: 100%;
   height: 100vh;
   //background: red;
+  transition: all 0.8s;
 
   .layout_slider {
     height: 100%;
@@ -45,6 +55,7 @@ const userStore = useUserStore();
     background: $base-background-color;
     color: white;
   }
+
   .layout_tab_bar {
     padding: 10px;
     position: fixed;
@@ -53,7 +64,14 @@ const userStore = useUserStore();
     background: cyan;
     top: 0;
     left: $base-menu-width;
+    transition: all 0.8s;
   }
+
+  & .fold_class {
+    width: calc(100vw - $base-menu-width-min);
+    left: $base-menu-width-min;
+  }
+
   .layout_main {
     position: absolute;
     width: calc(100% - $base-menu-width);
@@ -64,12 +82,22 @@ const userStore = useUserStore();
     padding: 20px;
     //防止main撑开container
     overflow: auto;
+    transition: all 0.8s;
   }
+  & .fold_class {
+    width: calc(100vw - $base-menu-width-min);
+    left: $base-menu-width-min;
+  }
+
   .scrollbar {
     width: 100%;
     height: calc(100% - $base-menu-logo-height);
+
     .el-menu {
       border-right: none;
+    }
+    &.fold_class {
+      width: $base-menu-width-min;
     }
   }
 }

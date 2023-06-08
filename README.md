@@ -21,8 +21,7 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
 
 method 1
 
-` app.component("SvgIcon", SvgIcon);
-`
+`app.component("SvgIcon", SvgIcon);`
 
 method 2
 
@@ -104,4 +103,36 @@ declare module "*.vue" {
     overflow: auto;
 
 <!--            //递归组件-->
+
             <Menu :menu-list="item.children"></Menu>
+## 全屏实现
+```js
+const fullScreen = () => {
+  console.log();
+  let fullScreen = document.fullscreenElement;
+  //null非全屏 true全屏
+  if (!fullScreen) {
+    document.documentElement.requestFullscreen();
+  } else {
+    // 退出全屏
+    document.exitFullscreen();
+  }
+};
+```
+
+## watch 
+````js
+watch(
+        () => layoutSettingStore.refresh,
+        () => {
+           flag.value = false;
+           //重新创建组件
+           console.log(456);
+           nextTick(() => {
+              // TODO network没有重新发包
+              flag.value = true;
+              console.log(123);
+           });
+        },
+);
+````

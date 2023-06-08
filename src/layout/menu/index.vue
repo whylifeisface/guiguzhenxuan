@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import { defineProp }
-import { useRouter } from "vue-router"
+import { useRouter } from "vue-router";
 defineProps(["menuList"]);
 const $router = useRouter();
 const goRoute = async (vs: any) => {

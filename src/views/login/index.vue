@@ -84,7 +84,7 @@ const login = async () => {
   }
 };
 //获得form组件实例
-// const validatorUserName = (rule, value, callBack) => {
+// const validatorUserName = (role, value, callBack) => {
 //   // 数组校验对象 表单内容 函数
 //   if (/^\d{5,10}$/.test(value)) {
 //     callBack();
