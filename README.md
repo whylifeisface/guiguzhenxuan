@@ -105,7 +105,9 @@ declare module "*.vue" {
 <!--            //递归组件-->
 
             <Menu :menu-list="item.children"></Menu>
+
 ## 全屏实现
+
 ```js
 const fullScreen = () => {
   console.log();
@@ -120,19 +122,31 @@ const fullScreen = () => {
 };
 ```
 
-## watch 
-````js
+## watch
+
+```js
 watch(
-        () => layoutSettingStore.refresh,
-        () => {
-           flag.value = false;
-           //重新创建组件
-           console.log(456);
-           nextTick(() => {
-              // TODO network没有重新发包
-              flag.value = true;
-              console.log(123);
-           });
-        },
+  () => layoutSettingStore.refresh,
+  () => {
+    flag.value = false;
+    //重新创建组件
+    console.log(456);
+    nextTick(() => {
+      // TODO network没有重新发包
+      flag.value = true;
+      console.log(123);
+    });
+  },
 );
-````
+```
+**vue 路由守卫写在main.ts**
+
+**pinia的仓库不在.vue就要把pinia大仓库导入defineStore里面**
+
+```js
+
+import { pinia } from "@/store";
+import { useUserStore } from "@/store/module/user.ts";
+const userStore = useUserStore(pinia);
+
+```

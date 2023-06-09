@@ -12,7 +12,8 @@ const layoutSettingStore = useLayoutSettingStore();
 
 <template>
   <div class="layout_container">
-    <div class="layout_slider" :class="{ fold_class: layoutSettingStore.fold }">
+    <!--    :class="{ fold_class: layoutSettingStore.fold }"-->
+    <div class="layout_slider">
       <logo></logo>
       <!--      展示菜单-->
       <el-scrollbar class="scrollbar">
@@ -95,9 +96,6 @@ const layoutSettingStore = useLayoutSettingStore();
 
     .el-menu {
       border-right: none;
-    }
-    &.fold_class {
-      width: $base-menu-width-min;
     }
   }
 }

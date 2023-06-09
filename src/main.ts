@@ -13,7 +13,7 @@ import globalComponent from "@/components/index";
 import { router } from "@/router";
 //@ts-ignore
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
-
+import "./permission.ts";
 // pinia
 import { pinia } from "@/store";
 

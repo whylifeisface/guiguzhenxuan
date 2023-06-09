@@ -50,7 +50,8 @@ import { useUserStore } from "@/store/module/user";
 import type { LoginForm } from "@/api/type";
 import { ElNotification, FormRules } from "element-plus";
 import { getTime } from "@/utils/Time";
-
+import { useRoute } from "vue-router";
+const $route = useRoute();
 let loading = ref(false);
 const $router = useRouter();
 const useStore = useUserStore();
@@ -68,7 +69,9 @@ const login = async () => {
   try {
     loading.value = true;
     await useStore.userLogin(loginForm);
-    await $router.push("/");
+    const redirect = $route.query.redirect;
+    // @ts-expect-error
+    await $router.push({ path: redirect || "/" });
     ElNotification({
       type: "success",
       message: `Hi,${getTime()}好`,
