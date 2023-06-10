@@ -5,6 +5,9 @@ import { reqHasTrademark } from "@/api/product/trademark";
 //获得当前页面的数据 page 当前页面 size 要几个数据
 async function get_Trademark() {
   await reqHasTrademark(page_now.value, page_size.value);
+  // if (result.code == 200){
+  //   result.
+  // }
 }
 onMounted(() => {
   get_Trademark();

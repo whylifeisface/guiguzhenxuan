@@ -25,8 +25,15 @@ export default defineConfig(({ command, mode }) => {
 
     server: {
       proxy: {
-        [env.VITE_APP_BASE_API]: {
+        [env.VITE_A]: {
           target: env.VITE_SERVE,
+          changeOrigin: true,
+          rewrite: (path) => {
+            return path.replace(/^\/api/, "");
+          },
+        },
+        [env.VITE_PRODUCT]: {
+          target: env.VITE_SERVE_PRO,
           changeOrigin: true,
           rewrite: (path) => {
             console.log(path);

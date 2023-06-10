@@ -151,14 +151,15 @@ const userStore = useUserStore(pinia);
 ```
 
 ## loadEnv
-````js
-vite.config.ts
-import { defineConfig, loadEnv } from "vite";
 
-````
+```js
+vite.config.ts;
+import { defineConfig, loadEnv } from "vite";
+```
+
 ## 配置跨域 代理
-   
-````js
+
+```js
 {
    server: {
       proxy: {
@@ -173,10 +174,8 @@ import { defineConfig, loadEnv } from "vite";
       }
    }
 }
-   ````
+```
 
+浏览器 TOKEN 不空报错 post 写出 get 报错一早上
 
-浏览器TOKEN不空报错  post 写出 get 报错一早上
-
-
-vite.config.ts 文件里面的console.log 在编辑器里面出现打印
+vite.config.ts 文件里面的 console.log 在编辑器里面出现打印

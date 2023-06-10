@@ -5,5 +5,5 @@ enum API {
 }
 // page 第几页  size 几个数据
 export const reqHasTrademark = (page: number, size: number) => {
-  request.get<any, unknown>(API.TRADEMARK_URL + `${page}/${size}`);
-}
+  request.get<any, any>(API.TRADEMARK_URL + `${page}/${size}`);
+};
