@@ -6,7 +6,6 @@ const allGlobalComponent = {
   SvgIcon,
 };
 // type A = keyof typeof allGlobalComponent;
-console.log(SvgIcon);
 // Object.keys(allGlobalComponent).forEach((key) => {
 //     //   app.component(key, allGlobalComponent[key]);
 //     console.log(key);
@@ -17,7 +16,6 @@ console.log(SvgIcon);
 export default {
   install(app: any) {
     Object.keys(allGlobalComponent).forEach((key: string) => {
-      console.log("123");
       app.component(
         key,
         allGlobalComponent[key as keyof typeof allGlobalComponent],
@@ -25,7 +23,6 @@ export default {
       for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
         app.component(key, component);
       }
-      console.log(key);
     });
   },
 };

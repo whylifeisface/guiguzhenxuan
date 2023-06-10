@@ -21,9 +21,10 @@ const fullScreen = () => {
     document.exitFullscreen();
   }
 };
-const logout = () => {
-  userStore.logout();
-  $router.push({ path: "/login", query: { redirect: $route.path } });
+const logout = async () => {
+  //await 成功才执行下面的代码
+  await userStore.logout();
+  await $router.push({ path: "/login", query: { redirect: $route.path } });
   console.log(123);
 };
 </script>

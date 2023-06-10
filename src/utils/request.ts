@@ -9,6 +9,7 @@ const request = axios.create({
 });
 //请求拦截器
 request.interceptors.request.use((config) => {
+  // console.log(config.url);
   //把token带给服务器
   const userStore = useUserStore();
   if (userStore.$state.token) {

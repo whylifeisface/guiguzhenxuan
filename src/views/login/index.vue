@@ -32,6 +32,7 @@
               size="default"
               @click="login"
               class="login_btn"
+              @keyup.enter="login"
             >
               登录
             </el-button>
@@ -51,14 +52,15 @@ import type { LoginForm } from "@/api/type";
 import { ElNotification, FormRules } from "element-plus";
 import { getTime } from "@/utils/Time";
 import { useRoute } from "vue-router";
+
 const $route = useRoute();
 let loading = ref(false);
 const $router = useRouter();
 const useStore = useUserStore();
 
 const loginForm = reactive<LoginForm>({
-  username: "",
-  password: "",
+  username: "admin",
+  password: "atguigu123",
 });
 const loginFormRef = ref(null);
 const login = async () => {
@@ -69,9 +71,12 @@ const login = async () => {
   try {
     loading.value = true;
     await useStore.userLogin(loginForm);
-    const redirect = $route.query.redirect;
-    // @ts-expect-error
-    await $router.push({ path: redirect || "/" });
+    const redirect: string = <string>$route.query.redirect;
+    if (redirect == undefined) {
+      await $router.push("/");
+    } else {
+      await $router.push(redirect);
+    }
     ElNotification({
       type: "success",
       message: `Hi,${getTime()}好`,

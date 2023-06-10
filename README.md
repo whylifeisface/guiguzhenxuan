@@ -139,14 +139,44 @@ watch(
   },
 );
 ```
-**vue 路由守卫写在main.ts**
 
-**pinia的仓库不在.vue就要把pinia大仓库导入defineStore里面**
+**vue 路由守卫写在 main.ts**
+
+**pinia 的仓库不在.vue 就要把 pinia 大仓库导入 defineStore 里面**
 
 ```js
-
 import { pinia } from "@/store";
 import { useUserStore } from "@/store/module/user.ts";
 const userStore = useUserStore(pinia);
-
 ```
+
+## loadEnv
+````js
+vite.config.ts
+import { defineConfig, loadEnv } from "vite";
+
+````
+## 配置跨域 代理
+   
+````js
+{
+   server: {
+      proxy: {
+         [env.VITE_APP_BASE_API]: {
+            //
+            target: env.VITE_SERVE,
+                    //需要代理跨域
+                    changeOrigin: true,
+                    //路径重写
+                    rewrite: (path) => path.replace(/^\/api/, ""),
+         }
+      }
+   }
+}
+   ````
+
+
+浏览器TOKEN不空报错  post 写出 get 报错一早上
+
+
+vite.config.ts 文件里面的console.log 在编辑器里面出现打印

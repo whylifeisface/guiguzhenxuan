@@ -24,4 +24,4 @@ app.use(ElementPlus, {
 app.use(globalComponent).use(router).use(pinia);
 app.mount("#app");
 import "@/style/index.scss";
-console.log(import.meta.env);
+// console.log(import.meta.env);
