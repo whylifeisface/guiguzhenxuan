@@ -32,7 +32,6 @@
               size="default"
               @click="login"
               class="login_btn"
-              @keyup.enter="login"
             >
               登录
             </el-button>
@@ -48,7 +47,7 @@ import { User, Lock } from "@element-plus/icons-vue";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/module/user";
-import type { LoginForm } from "@/api/type";
+import type { LoginFormData } from "@/api/type";
 import { ElNotification, FormRules } from "element-plus";
 import { getTime } from "@/utils/Time";
 import { useRoute } from "vue-router";
@@ -58,7 +57,7 @@ let loading = ref(false);
 const $router = useRouter();
 const useStore = useUserStore();
 
-const loginForm = reactive<LoginForm>({
+const loginForm = reactive<LoginFormData>({
   username: "admin",
   password: "atguigu123",
 });
@@ -128,6 +127,14 @@ const rule = reactive<FormRules>({
 });
 // const message = ref("");
 //获得时间 判断时间是早上还是下午还是晚上
+
+//vue3 @keydow.enter 需要组件获取焦点 addEventListener 可以实现按下enter执行login（）
+document.addEventListener("keydown",(event) => {
+  let key = event.key
+  if (key == "Enter"){
+    login()
+  }
+})
 </script>
 
 <style scoped lang="scss">

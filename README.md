@@ -179,3 +179,16 @@ import { defineConfig, loadEnv } from "vite";
 浏览器 TOKEN 不空报错 post 写出 get 报错一早上
 
 vite.config.ts 文件里面的 console.log 在编辑器里面出现打印
+```js
+//vue3 @keydow.enter 需要组件获取焦点 addEventListener 可以实现按下enter执行login（）
+document.addEventListener("keydown",(event) => {
+  let key = event.key
+  if (key == "Enter"){
+    login()
+  }
+})
+```
+
+
+post 请求忘记带上 data参数
+很像是我会做的

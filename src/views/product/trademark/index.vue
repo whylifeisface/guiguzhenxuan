@@ -1,7 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { reqHasTrademark } from "@/api/product/trademark";
-import type { Records, ResponseProduct } from "@/api/product/trademark/type.ts";
+import { onMounted, reactive, ref } from "vue";
+import {
+  reqHasTrademark,
+  reqAddOrUpdateTradeMark,
+} from "@/api/product/trademark";
+import type {
+  Records,
+  ResponseProduct,
+  TradeMark,
+} from "@/api/product/trademark/type.ts";
+import { ElMessage, UploadProps } from "element-plus";
 
 //获得当前页面的数据 page 当前页面 size 要几个数据
 async function get_Trademark() {
@@ -12,8 +20,6 @@ async function get_Trademark() {
   if (result.code == 200) {
     total.value = result.data.total;
     trademarkArr.value = result.data.records;
-    // page_now.value = result.data.pages;
-    // page_size.value = result.data.size;
   } else {
     console.log(result.message);
   }
@@ -37,6 +43,75 @@ const sizeChange = () => {
   page_now.value = 1;
   get_Trademark();
 };
+
+//收集表单品牌数据
+let tradeMarkParam = reactive<TradeMark>({
+  tmName: "",
+  logoUrl: "",
+});
+const DialogFormVisibility = ref(false);
+
+// dialog title 值 添加 | 修改
+const title = ref("添加");
+
+// 修改之前把数据从table里面获取了 从data里面copy
+const updateTradeMark = async (data: TradeMark) => {
+  console.log(data);
+  title.value = "修改";
+  DialogFormVisibility.value = true;
+  Object.assign(tradeMarkParam, data);
+};
+// 收集数据之前清空数据
+const addTradeMark = () => {
+  title.value = "添加";
+  tradeMarkParam.id = 0;
+  tradeMarkParam.tmName = "";
+  tradeMarkParam.logoUrl = "";
+
+  DialogFormVisibility.value = true;
+};
+
+//对话框底部 取消按钮
+const cancel = () => {
+  DialogFormVisibility.value = false;
+};
+//对话框底部 确定按钮 修改或者添加品牌 修改留在当前页面
+const confirm = async () => {
+  console.log(tradeMarkParam);
+  let result = await reqAddOrUpdateTradeMark(tradeMarkParam);
+  console.log(result);
+  if (result.code == 200) {
+    ElMessage.success(`${title.value}成功`);
+    page_now.value = 1;
+    changePageNo();
+  } else {
+    ElMessage.error(`${title.value}失败`);
+  }
+
+  DialogFormVisibility.value = false;
+};
+//上传图片之前的钩子函数  可以用来约束文件类型和大小
+// 要求 格式必须是 gpg png gif  小于4MB
+const beforeUpload: UploadProps["beforeUpload"] = (rawFile) => {
+  // console.log(rawFile);
+  if (
+    rawFile.type != "image/jpeg" &&
+    rawFile.type != "image/png" &&
+    rawFile.type != "image/gif"
+  ) {
+    ElMessage.error({ message: "文件必须是图片" });
+    return false;
+  }
+  if (rawFile.size / 1024 / 1024 > 4) {
+    ElMessage.error({ message: "文件大于4MB" });
+    return false;
+  }
+  return true;
+};
+
+const OnUploadSuccess: UploadProps["onSuccess"] = (response) => {
+  tradeMarkParam.logoUrl = response.data;
+};
 </script>
 
 <template>
@@ -44,7 +119,12 @@ const sizeChange = () => {
     <h1>品牌管理</h1>
     <el-card>
       <div>
-        <el-button type="primary" size="default" icon="Plug">
+        <el-button
+          type="primary"
+          size="default"
+          icon="Plus"
+          @click="addTradeMark"
+        >
           添加品牌
         </el-button>
         <div class="bannerTable">
@@ -66,6 +146,7 @@ const sizeChange = () => {
             <el-table-column label="品牌名称" prop="tmName"></el-table-column>
             <el-table-column label="品牌logo">
               <template #default="{ row }">
+                <!--                TODO    图片太大-->
                 <img
                   :src="row.logoUrl"
                   alt="图片不存在"
@@ -74,8 +155,13 @@ const sizeChange = () => {
               </template>
             </el-table-column>
             <el-table-column label="品牌操作">
-              <template #default>
-                <el-button type="warning" size="small" icon="Edit">
+              <template #default="{ row }">
+                <el-button
+                  type="warning"
+                  size="small"
+                  icon="Edit"
+                  @click="updateTradeMark(row)"
+                >
                   编辑
                 </el-button>
                 <el-button type="danger" size="small" icon="Delete">
@@ -111,10 +197,68 @@ const sizeChange = () => {
       </div>
     </el-card>
   </div>
+
+  <div>
+    <!--    对话款组件在添加和修改时出现
+        是否显示
+        左上角标题
+-->
+    <el-dialog v-model="DialogFormVisibility" :title="`${title}品牌`">
+      <el-form style="width: 80%">
+        <el-form-item label="品牌名称" label-width="80px">
+          <el-input
+            type="text"
+            v-model="tradeMarkParam.tmName"
+            placeholder="请输入品牌名称"
+          />
+        </el-form-item>
+        <el-form-item label="品牌LOGO" label-width="80px">
+          <!--
+            action: 请求的url-->
+          <el-upload
+            class="upload-class"
+            action="/api/admin/product/fileUpload"
+            :show-file-list="false"
+            :before-upload="beforeUpload"
+            :on-success="OnUploadSuccess"
+          >
+            <img
+              :src="tradeMarkParam.logoUrl"
+              v-if="tradeMarkParam.logoUrl"
+              alt=""
+            />
+            <el-icon v-else class="plus">
+              <Plus></Plus>
+            </el-icon>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <!--        底部取消确定按钮-->
+      <template #footer>
+        <el-button type="primary" @click="cancel">取消</el-button>
+        <el-button type="primary" @click="confirm">确定</el-button>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .bannerTable {
   margin-top: 20px;
+}
+.upload-class {
+  width: 178px;
+  height: 178px;
+  border: black dashed 1px;
+  border-radius: 6px;
+  cursor: pointer;
+  overflow: hidden;
+  .plus {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    text-align: center;
+  }
 }
 </style>
