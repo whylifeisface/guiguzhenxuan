@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from "vue";
 import {
   reqHasTrademark,
   reqAddOrUpdateTradeMark,
+  reqDeleteTrademark,
 } from "@/api/product/trademark";
 import type {
   Records,
@@ -57,8 +58,9 @@ const title = ref("添加");
 // 修改之前把数据从table里面获取了 从data里面copy
 const updateTradeMark = async (data: TradeMark) => {
   //清空form校验错误提示信息
+
   formRef.value?.clearValidate("tmName");
-  formRef.value?.clearValidate("logUrl");
+  formRef.value?.clearValidate("logoUrl");
   console.log(data);
   title.value = "修改";
   DialogFormVisibility.value = true;
@@ -72,7 +74,7 @@ const addTradeMark = () => {
   tradeMarkParam.logoUrl = "";
   // formRef.value 为undefine  两种解决 ? 或者 在nextTick里面
   formRef.value?.clearValidate("tmName");
-  formRef.value?.clearValidate("logUrl");
+  formRef.value?.clearValidate("logoUrl");
 
   DialogFormVisibility.value = true;
 };
@@ -135,6 +137,20 @@ const rules: FormRules = {
   //不是表单元素 不方便触发 在formRef validator中触发  validator会出现提示信息没有去除成功
   logoUrl: [{ required: true, trigger: "change", validator: validatorLogoUrl }],
 };
+
+//删除tradmark button
+const removeTrademark = async (id: number) => {
+  let result = await reqDeleteTrademark(id);
+  if (result.code == 200) {
+    ElMessage({
+      type: "success",
+      message: "删除品牌成功",
+    });
+    await get_Trademark();
+  } else {
+    ElMessage.error("删除品牌成功");
+  }
+};
 </script>
 
 <template>
@@ -187,9 +203,18 @@ const rules: FormRules = {
                 >
                   编辑
                 </el-button>
-                <el-button type="danger" size="small" icon="Delete">
-                  删除
-                </el-button>
+                <el-popconfirm
+                  :title="`您确定要删除${row.tmName}`"
+                  width="250px"
+                  icon="Delete"
+                  @confirm="removeTrademark(row.id)"
+                >
+                  <template #reference>
+                    <el-button type="danger" size="small" icon="Delete">
+                      删除
+                    </el-button>
+                  </template>
+                </el-popconfirm>
               </template>
             </el-table-column>
           </el-table>

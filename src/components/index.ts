@@ -2,8 +2,10 @@
 import SvgIcon from "@/components/svgIcon/index.vue";
 //引入element plus 图标
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+import Category from "./Category/index.vue";
 const allGlobalComponent = {
   SvgIcon,
+  Category,
 };
 // type A = keyof typeof allGlobalComponent;
 // Object.keys(allGlobalComponent).forEach((key) => {
