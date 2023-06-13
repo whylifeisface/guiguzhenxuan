@@ -20,3 +20,7 @@ export interface TradeMark {
 }
 //全部品牌数据
 export type Records = TradeMark[];
+
+export interface TradeMarkUpOrSaOrDel_Response extends ResponseData {
+  data: null;
+}
