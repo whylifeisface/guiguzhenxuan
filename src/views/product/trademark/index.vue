@@ -9,7 +9,7 @@ import type {
   ResponseProduct,
   TradeMark,
 } from "@/api/product/trademark/type.ts";
-import { ElMessage, UploadProps } from "element-plus";
+import { ElMessage, FormInstance, FormRules, UploadProps } from "element-plus";
 
 //获得当前页面的数据 page 当前页面 size 要几个数据
 async function get_Trademark() {
@@ -56,6 +56,9 @@ const title = ref("添加");
 
 // 修改之前把数据从table里面获取了 从data里面copy
 const updateTradeMark = async (data: TradeMark) => {
+  //清空form校验错误提示信息
+  formRef.value?.clearValidate("tmName");
+  formRef.value?.clearValidate("logUrl");
   console.log(data);
   title.value = "修改";
   DialogFormVisibility.value = true;
@@ -67,6 +70,9 @@ const addTradeMark = () => {
   tradeMarkParam.id = 0;
   tradeMarkParam.tmName = "";
   tradeMarkParam.logoUrl = "";
+  // formRef.value 为undefine  两种解决 ? 或者 在nextTick里面
+  formRef.value?.clearValidate("tmName");
+  formRef.value?.clearValidate("logUrl");
 
   DialogFormVisibility.value = true;
 };
@@ -77,7 +83,7 @@ const cancel = () => {
 };
 //对话框底部 确定按钮 修改或者添加品牌 修改留在当前页面
 const confirm = async () => {
-  console.log(tradeMarkParam);
+  await formRef.value?.validate();
   let result = await reqAddOrUpdateTradeMark(tradeMarkParam);
   console.log(result);
   if (result.code == 200) {
@@ -111,6 +117,23 @@ const beforeUpload: UploadProps["beforeUpload"] = (rawFile) => {
 
 const OnUploadSuccess: UploadProps["onSuccess"] = (response) => {
   tradeMarkParam.logoUrl = response.data;
+  formRef.value?.clearValidate("logoUrl");
+};
+// tmName 校验规则  表单元素blur 时触发  需要tmName 长度大于2
+const validatorTmName = (_, value, callback) => {
+  value.trim().length >= 2
+    ? callback()
+    : callback(new Error("品牌名称需要大于2位"));
+};
+const formRef = ref<FormInstance>();
+const validatorLogoUrl = (_, value, callback) => {
+  value ? callback() : callback(new Error("请先上传文件"));
+};
+// 表单校验规则
+const rules: FormRules = {
+  tmName: [{ required: true, trigger: "blur", validator: validatorTmName }],
+  //不是表单元素 不方便触发 在formRef validator中触发  validator会出现提示信息没有去除成功
+  logoUrl: [{ required: true, trigger: "change", validator: validatorLogoUrl }],
 };
 </script>
 
@@ -204,15 +227,20 @@ const OnUploadSuccess: UploadProps["onSuccess"] = (response) => {
         左上角标题
 -->
     <el-dialog v-model="DialogFormVisibility" :title="`${title}品牌`">
-      <el-form style="width: 80%">
-        <el-form-item label="品牌名称" label-width="80px">
+      <el-form
+        style="width: 80%"
+        :rules="rules"
+        :model="tradeMarkParam"
+        ref="formRef"
+      >
+        <el-form-item label="品牌名称" label-width="100px" prop="tmName">
           <el-input
             type="text"
             v-model="tradeMarkParam.tmName"
             placeholder="请输入品牌名称"
           />
         </el-form-item>
-        <el-form-item label="品牌LOGO" label-width="80px">
+        <el-form-item label="品牌LOGO" label-width="100px" prop="logoUrl">
           <!--
             action: 请求的url-->
           <el-upload
@@ -246,6 +274,7 @@ const OnUploadSuccess: UploadProps["onSuccess"] = (response) => {
 .bannerTable {
   margin-top: 20px;
 }
+
 .upload-class {
   width: 178px;
   height: 178px;
@@ -253,6 +282,7 @@ const OnUploadSuccess: UploadProps["onSuccess"] = (response) => {
   border-radius: 6px;
   cursor: pointer;
   overflow: hidden;
+
   .plus {
     font-size: 28px;
     color: #8c939d;

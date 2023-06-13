@@ -129,12 +129,12 @@ const rule = reactive<FormRules>({
 //获得时间 判断时间是早上还是下午还是晚上
 
 //vue3 @keydow.enter 需要组件获取焦点 addEventListener 可以实现按下enter执行login（）
-document.addEventListener("keydown",(event) => {
-  let key = event.key
-  if (key == "Enter"){
-    login()
+document.addEventListener("keydown", (event) => {
+  let key = event.key;
+  if (key == "Enter") {
+    login();
   }
-})
+});
 </script>
 
 <style scoped lang="scss">
