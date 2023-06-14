@@ -1,9 +1,17 @@
 import { request } from "@/utils/request.ts";
-import { CategoryData } from "@/api/product/attr/type.ts";
+import {
+  AttrResponseData,
+  AttrUpdateOrAddResponse,
+  CategoryData,
+} from "@/api/product/attr/type.ts";
 enum API {
-  Category1_URL = "admin/product/getCategory1",
-  Category2_URL = "admin/product/getCategory2/",
-  Category3_URL = "admin/product/getCategory3/",
+  Category1_URL = "/admin/product/getCategory1",
+  Category2_URL = "/admin/product/getCategory2/",
+  Category3_URL = "/admin/product/getCategory3/",
+  //获取分类下已有的属性和属性值
+  ATTR_URL = "/admin/product/attrInfoList/",
+  // 添加或者修改Attr
+  UPDATE_OR_ADD_URL = "/admin/product/saveAttrInfo",
 }
 //获取一级分类的接口方法
 export const reqC1 = () => request.get<never, CategoryData>(API.Category1_URL);
@@ -13,3 +21,14 @@ export const reqC2 = (category1Id: number) =>
 
 export const reqC3 = (category2Id: number) =>
   request.get<never, CategoryData>(API.Category3_URL + category2Id);
+export const reqAttr = (
+  category1Id: number,
+  category2Id: number,
+  category3Id: number,
+) =>
+  request.get<never, AttrResponseData>(
+    API.ATTR_URL + `${category1Id}/${category2Id}/${category3Id}`,
+  );
+
+export const reqAddOrUpdateAttr = (data: Attr) =>
+  request.post<never, AttrUpdateOrAddResponse>(API.UPDATE_OR_ADD_URL, data);

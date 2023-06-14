@@ -12,4 +12,8 @@ export type { UserState };
 export interface CategorySate {
   c1Id: number | string;
   c1Attr: CategoryObject[];
+  c2Id: number | string;
+  c2Attr: CategoryObject[];
+  c3Id: number | string;
+  c3Attr: CategoryObject[];
 }
