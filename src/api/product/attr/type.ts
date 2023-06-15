@@ -21,6 +21,8 @@ export interface CategoryData extends ResponseData {
 }
 //属性值  的对象的ts类型
 export interface AttrValue {
+  flag: boolean; //标记编辑模式true
+
   id?: number;
   valueName: string;
   attrId?: number;
