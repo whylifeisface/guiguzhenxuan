@@ -128,7 +128,7 @@ const deleteAttr = async () => {
 
 const deleteArray = (index: number) => {
   attrParam.attrValueList.splice(index, 1);
-}
+};
 //路由销毁的时候把store清空
 onBeforeMount(() => {
   categoryStore.$reset();
@@ -238,8 +238,12 @@ onBeforeMount(() => {
             </template>
           </el-table-column>
           <el-table-column label="属性值">
-            <template #default="{row, $index}">
-              <el-button type="danger" @click="deleteArray($index)" icon="Delete"></el-button>
+            <template #default="{ row, $index }">
+              <el-button
+                type="danger"
+                @click="deleteArray($index)"
+                icon="Delete"
+              ></el-button>
             </template>
           </el-table-column>
           <el-button type="primary" @click="save" icon="Plus">保存</el-button>
