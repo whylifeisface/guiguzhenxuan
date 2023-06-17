@@ -4,6 +4,7 @@ import path from "path";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { viteMockServe } from "vite-plugin-mock";
 // https://vitejs.dev/config/
+
 export default defineConfig(({ command, mode }) => {
   //获取各种环境下的变量    procss.cwd() index.html所在路径
   const env = loadEnv(mode, process.cwd());
