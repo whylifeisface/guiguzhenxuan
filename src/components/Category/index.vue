@@ -35,6 +35,11 @@ const handler = () => {
 //select 值一旦发生变化 通知仓库发送请求获得三级分类
 const handler1 = () => {
   categoryStore.c3Id = "";
+  // categoryStore.c3Attr = [];
+  getC3();
+};
+//c3Id变化 触发
+const handler2 = () => {
   getC3();
 };
 </script>
@@ -79,7 +84,8 @@ const handler1 = () => {
         <el-form-item label="三级分类">
           <el-select :disabled="scene == 1" v-model="categoryStore.$state.c3Id">
             <el-option
-              v-for="c3 in categoryStore.$state.c3Attr"
+              @change="handler2"
+              v-for="c3 in categoryStore.c3Attr"
               :key="c3.id"
               :label="c3.name"
               :value="c3.id"

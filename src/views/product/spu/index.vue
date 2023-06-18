@@ -5,7 +5,7 @@ import Category from "@/components/Category/index.vue";
 import { ref, watch } from "vue";
 import { useCategoryStore } from "@/store/module/category.ts";
 import { reqHasSpu } from "@/api/product/spu";
-import { Records } from "@/api/product/spu/type.ts";
+import { Records, SpuData } from "@/api/product/spu/type.ts";
 //场景数据控制Category显示
 const scene = ref(1); // 0 显示   1 添加或修改 2 添加SKU结构
 let pageNo = ref(1);
@@ -14,7 +14,7 @@ const total = ref(0);
 const categoryStore = useCategoryStore();
 //监听三级分类Id变化
 watch(
-  () => categoryStore.c3Id,
+  () => categoryStore.$state.c3Id,
   () => {
     //监听变化 但是要categoryStore.c3Id有值
     if (!categoryStore.$state.c3Id) return;
@@ -31,7 +31,7 @@ const getHasSpu = async () => {
   if (result.code == 200) {
     record.value = result.data.records;
     total.value = result.data.total;
-  } else console.log(result.data);
+  } else console.log(result.message);
 };
 
 let record = ref<Records>([]);
@@ -51,6 +51,14 @@ const changeScene = (num: number) => {
   //子组件SPUForm 点击取消变为场景0
   scene.value = num;
 };
+
+//修改SPU按钮回调
+const updateSpu = (row: SpuData) => {
+  scene.value = 1;
+  //调用子组件实例方法获取完整的SPU
+  spuForm.value.initHasSpuData(row);
+};
+const spuForm = ref();
 </script>
 
 <template>
@@ -82,21 +90,20 @@ const changeScene = (num: number) => {
             show-overflow-tooltip
           />
           <el-table-column label="操作">
-            <template #default>
+            <template #default="{ row }">
+              <el-button type="primary" size="small" icon="Plus" />
+              <!--              title="添加Spu"-->
               <el-button
-                type="primary"
+                @click="updateSpu(row)"
+                type="warning"
                 size="small"
-                icon="Plus"
-                title="添加Spu"
+                icon="Edit"
               />
-              <el-button type="" size="small" icon="Edit" title="修改Spu" />
-              <el-button
-                type=""
-                size="small"
-                icon="Search"
-                title[="查看SPU列表"
-              />
-              <el-button type="" size="small" icon="Delete" title="" />
+              <!--              title="修改Spu"-->
+              <el-button type="info" size="small" icon="Search" />
+              <!--              title[="查看SPU列表"-->
+              <el-button type="danger" size="small" icon="Delete" />
+              <!--              title="删除"-->
             </template>
           </el-table-column>
         </el-table>
@@ -110,7 +117,11 @@ const changeScene = (num: number) => {
           @size-change="changeSize"
         />
       </div>
-      <SpuForm v-show="scene == 1" @changeScene="changeScene"></SpuForm>
+      <SpuForm
+        ref="spuForm"
+        v-show="scene == 1"
+        @changeScene="changeScene"
+      ></SpuForm>
       <sku-form v-show="scene == 2"></sku-form>
     </el-card>
   </div>
