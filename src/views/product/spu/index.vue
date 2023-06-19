@@ -45,6 +45,7 @@ const changeSize = () => {
 //添加新SPU按钮的回调
 const addScene = () => {
   scene.value = 1;
+  spuForm.value.initAddSpu();
 };
 //子组件SPUForm 绑定自定义事件： 目前是让子组件通知父组件切换场景0
 const changeScene = (num: number) => {
@@ -59,6 +60,7 @@ const updateSpu = (row: SpuData) => {
   spuForm.value.initHasSpuData(row);
 };
 const spuForm = ref();
+
 </script>
 
 <template>

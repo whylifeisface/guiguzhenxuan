@@ -1,13 +1,13 @@
 import { request } from "@/utils/request.ts";
 import {
-  AllTradeMarkResponseData,
+  AllTradeMarkResponseData, defaultResponse,
   HasSaleAttrResponseData,
   HasSpuResponseDate,
   SaleAttrResponseData,
   SpuData,
-  SpuHasImage,
+  SpuHasImage
 } from "@/api/product/spu/type.ts";
-import { TradeMarkUpOrSaOrDel_Response } from "@/api/product/trademark/type.ts";
+// import { TradeMarkUpOrSaOrDel_Response } from "@/api/product/trademark/type.ts";
 enum API {
   HASSPU_URL = "/admin/product/",
   ALL_TRADEMARK_URL = "/admin/product/baseTrademark/getTrademarkList", //获取全部品牌数据
@@ -48,15 +48,7 @@ export const reqAllSaleAttr = () =>
 //添加一个新的SPU
 //修改一个已有SPU
 //response data = null
-export const reqAddOrUpdateSpu = async (spu: SpuData) => {
-  if (spu.id)
-    await request.post<never, TradeMarkUpOrSaOrDel_Response>(
-      API.ADD_SPU_URL,
-      spu,
-    );
-  else
-    await request.post<never, TradeMarkUpOrSaOrDel_Response>(
-      API.UPDATE_SPU_URL,
-      spu,
-    );
+export const reqAddOrUpdateSpu = (spu: SpuData) => {
+  if (spu.id) return request.post<never, defaultResponse>(API.ADD_SPU_URL, spu);
+  else return request.post<never, defaultResponse>(API.UPDATE_SPU_URL, spu);
 };

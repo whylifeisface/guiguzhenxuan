@@ -23,12 +23,12 @@ export interface spuSaleAttrType {
 }
 export interface SpuData {
   id?: number;
-  spuName: number;
+  spuName: number | string; //为什么是number
   description: string;
   category3Id: number | string;
   tmId: number; //品牌ID
-  spuSaleAttrList: null | spuSaleAttrType[];
-  spuImageList: null | spuImageType[];
+  spuSaleAttrList: null | SaleAttrs[];
+  spuImageList: null | SpuImage[];
 }
 //数组包含元素都是SPU数据类型
 export type Records = SpuData[];
@@ -54,19 +54,22 @@ export interface AllTradeMarkResponseData extends ResponseData {
 }
 //商品图片的ts类型
 export interface SpuImage {
-  id?: number;
-  imgName?: string;
+  id?: number; //save need
+  imgName?: string; //save need
   creatTime?: string;
   updateTime?: string;
-  spuId?: number;
+  spuId?: number; // save need
   name?: string;
   url?: string;
-  imageUrl?: string;
+  imgUrl?: string; //save need
 }
 
 //定义已有的SPU照片墙数据类型
 export interface SpuHasImage extends ResponseData {
   data: SpuImage[];
+}
+export interface defaultResponse extends ResponseData {
+  data: null;
 }
 
 //已有的销售属性值对象ts类型
@@ -79,23 +82,27 @@ export interface SaleAttrValue {
   saleAttrValueName: string;
   saleAttrName: string;
   isChecked: null;
+  flag: boolean; // 标志位表示到底是编辑模式 还是 查看模式.
 }
 
 export type SaleAttrValueList = SaleAttrValue[];
 
 //销售属性对象ts类型
-export interface SaleAttr {
-  id?: number;
-  creatTime: string;
-  updateTime: string;
-  spuId: number;
-  baseSaleAttrId: number;
-  SaleAttrValueName: string;
+
+export interface SaleAttrs {
+  inputText?: string;
+  id?: number; // need
+  creatTime?: string;
+  updateTime?: string;
+  spuId?: number;
+  baseSaleAttrId: number; // need
+  SaleAttrValueName?: string;
   spuSaleAttrValueList: SaleAttrValueList;
+  saleAttrName?: string; // ? need
 }
 //SPU已有的销售属性接口返回的ts类型
 export interface SaleAttrResponseData extends ResponseData {
-  data: SaleAttr[];
+  data: SaleAttrs[];
 }
 
 //已有的全部的SPU返回数据ts类型
@@ -104,6 +111,6 @@ export interface HasSaleAttr {
   name: string;
 }
 
-export interface HasSaleAttrResponseData extends ResponseData{
+export interface HasSaleAttrResponseData extends ResponseData {
   data: HasSaleAttr[];
 }
