@@ -60,7 +60,6 @@ const updateSpu = (row: SpuData) => {
   spuForm.value.initHasSpuData(row);
 };
 const spuForm = ref();
-
 </script>
 
 <template>

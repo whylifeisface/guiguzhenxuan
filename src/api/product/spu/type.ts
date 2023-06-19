@@ -75,14 +75,13 @@ export interface defaultResponse extends ResponseData {
 //已有的销售属性值对象ts类型
 export interface SaleAttrValue {
   id?: number;
-  creatTime: string;
-  updateTime: string;
+  creatTime?: string;
+  updateTime?: string;
   spuId: number;
   baseSaleAttrId: number;
   saleAttrValueName: string;
   saleAttrName: string;
-  isChecked: null;
-  flag: boolean; // 标志位表示到底是编辑模式 还是 查看模式.
+  isChecked?: null;
 }
 
 export type SaleAttrValueList = SaleAttrValue[];

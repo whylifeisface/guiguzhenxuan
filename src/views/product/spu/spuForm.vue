@@ -55,10 +55,9 @@ const initHasSpuData = async (spu: SpuData) => {
   // Promise.all()
   AllTradeMark.value = result.data;
   saleAttr.value = saleAttrResponseData.data;
-  saleAttr.value.map((item) => {
-    return item.spuSaleAttrValueList.map((value) => {
-      value.flag = true;
-    });
+  // 初始化数据的同时把是否显示 有多少条数据就有多少个flag 那么addAttr成功也要增加
+  saleAttr.value.map(() => {
+    flagList.value.push({ flag: true });
   });
   // console.log(saleAttr.value, "saleAttr.value");
   allSaleAttr.value = allSale.data;
@@ -139,6 +138,7 @@ const addAttrValue = () => {
     saleAttrName: saleAttrName,
     spuSaleAttrValueList: [],
   });
+  flagList.value.push({ flag: true });
   sale.value = "";
 };
 
@@ -156,32 +156,46 @@ const unSelectSaleAttr = computed(() => {
 });
 const sale = ref("");
 
-const toEdit = (list) => {
-  list.flag = false;
+const toEdit = ($index) => {
+  // console.log(spuParams.value);
+  // console.log(flagList);
+  flagList.value[$index].flag = false;
+  flagList.value[$index].content = "";
+  // console.log("flag", flagList[$index].flag);
 };
 
 // 添加销售属性值tag input框绑定的值
-const InputText = ref("");
+// const InputText = ref("");
 const blurFu = (list, $index) => {
-  // console.log($index, "index");
   //校验输入内容合法性  不能为空  不能重复
   //合法则加入param
   // console.log(spuParams);
-  if (InputText.value.trim() == "") {
+  if (flagList.value[$index].content?.trim() == "") {
     ElMessage.warning("请输入内容");
+    return;
   }
-  const repeat = spuParams.value.spuSaleAttrList?.find((item) => {
-    return item.SaleAttrValueName == InputText.value;
+  const repeat = saleAttr.value[$index].spuSaleAttrValueList.find((item) => {
+    return item.saleAttrValueName == flagList.value[$index].content;
   });
-  if (repeat) ElMessage.warning("内容不能重复，请重新输入");
+  if (repeat) {
+    ElMessage.warning("内容不能重复，请重新输入");
+    return;
+  }
+  console.log(saleAttr.value[$index].spuSaleAttrValueList, "list");
   //TODD spuParams.value.spuSaleAttrList null error
-  const saleAttrValue: SaleAttrValue = list;
-  saleAttrValue.saleAttrValueName = InputText.value;
-  spuParams.value.spuSaleAttrList[$index]?.spuSaleAttrValueList.push(
-    saleAttrValue,
-  );
-  spuParams.value.spuSaleAttrList[$index].flag = true;
+  const { spuId, baseSaleAttrId, saleAttrName } = list;
+  const value = JSON.parse(JSON.stringify(flagList.value));
+  saleAttr.value[$index].spuSaleAttrValueList.push({
+    spuId,
+    baseSaleAttrId,
+    saleAttrName,
+    saleAttrValueName: value[$index].content,
+  });
+  flagList.value[$index].flag = true;
 };
+
+// input 框显示content内容 //flag 标志位表示到底是编辑模式 还是 查看模式.
+const flagList = ref<{ content?: string; flag: boolean }[]>([]);
 
 defineExpose({ initHasSpuData, initAddSpu });
 </script>
@@ -276,24 +290,24 @@ defineExpose({ initHasSpuData, initAddSpu });
           <el-table-column prop="spuSaleAttrValueList" label="销售属性值">
             <template #default="{ row, $index }">
               <el-tag
-                v-for="item in row.spuSaleAttrValueList"
+                v-for="(item, index) in row.spuSaleAttrValueList"
                 :key="item.id"
                 closable
-                @close="row.spuSaleAttrValueList.splice($index, 1)"
+                @close="row.spuSaleAttrValueList.splice(index, 1)"
               >
                 {{ item.saleAttrValueName }}
               </el-tag>
               <el-button
-                v-if="row.spuSaleAttrValueList[$index].flag"
+                v-if="flagList[$index].flag"
                 type="primary"
                 size="small"
                 width="120px"
                 icon="Plus"
-                @click="toEdit(row.spuSaleAttrValueList[$index])"
+                @click="toEdit($index)"
               />
               <el-input
                 v-else
-                v-model="InputText"
+                v-model="flagList[$index].content"
                 size="small"
                 placeholder="请你输入属性值"
                 style="width: 100px"
@@ -302,7 +316,7 @@ defineExpose({ initHasSpuData, initAddSpu });
             </template>
           </el-table-column>
           <el-table-column label="操作" width="120px">
-            <template #default="{ _, $index }">
+            <template #default="{ $index }">
               <el-button
                 type="danger"
                 icon="Delete"

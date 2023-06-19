@@ -1,11 +1,12 @@
 import { request } from "@/utils/request.ts";
 import {
-  AllTradeMarkResponseData, defaultResponse,
+  AllTradeMarkResponseData,
+  defaultResponse,
   HasSaleAttrResponseData,
   HasSpuResponseDate,
   SaleAttrResponseData,
   SpuData,
-  SpuHasImage
+  SpuHasImage,
 } from "@/api/product/spu/type.ts";
 // import { TradeMarkUpOrSaOrDel_Response } from "@/api/product/trademark/type.ts";
 enum API {
