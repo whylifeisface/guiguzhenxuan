@@ -5,6 +5,7 @@ import {
   HasSaleAttrResponseData,
   HasSpuResponseDate,
   SaleAttrResponseData,
+  SkuData,
   SpuData,
   SpuHasImage,
 } from "@/api/product/spu/type.ts";
@@ -22,6 +23,7 @@ enum API {
   ADD_SPU_URL = "/admin/product/saveSpuInfo",
   // 更新已有SPU
   UPDATE_SPU_URL = "/admin/product/saveSpuInfo",
+  SPU_SAVE_URL = "/admin/product/saveSkuInfo",
 }
 
 export const reqHasSpu = (
@@ -52,4 +54,8 @@ export const reqAllSaleAttr = () =>
 export const reqAddOrUpdateSpu = (spu: SpuData) => {
   if (spu.id) return request.post<never, defaultResponse>(API.ADD_SPU_URL, spu);
   else return request.post<never, defaultResponse>(API.UPDATE_SPU_URL, spu);
+};
+
+export const reqSkuDataSave = (sku: SkuData) => {
+  return request.post<never, defaultResponse>(API.SPU_SAVE_URL, sku);
 };

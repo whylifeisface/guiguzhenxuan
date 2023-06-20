@@ -113,3 +113,27 @@ export interface HasSaleAttr {
 export interface HasSaleAttrResponseData extends ResponseData {
   data: HasSaleAttr[];
 }
+
+//sku 销售属性类型
+export interface SkuAttrValue {
+  attrId: number;
+  valueId: number;
+}
+export interface SkuSaleAttrValue {
+  saleAttrId: number;
+  saleAttrValueId: number;
+}
+//SKU save type
+export interface SkuData {
+  spuId: number;
+  tmId: number;
+  weight: string;
+  skuDesc?: string;
+  category3Id: number;
+  price: number;
+  skuName: string;
+  skuAttrValueList?: SkuAttrValue[]; // ?
+  skuDefaultImg: string;
+  skuImageList?: []; //?
+  skuSaleAttrValueList: SkuSaleAttrValue[];
+}

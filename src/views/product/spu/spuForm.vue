@@ -2,7 +2,6 @@
 import {
   HasSaleAttr,
   SaleAttrs,
-  SaleAttrValue,
   SpuData,
   SpuImage,
 } from "@/api/product/spu/type.ts";

@@ -59,7 +59,22 @@ const updateSpu = (row: SpuData) => {
   //调用子组件实例方法获取完整的SPU
   spuForm.value.initHasSpuData(row);
 };
+
+const addSku = (row: SpuData) => {
+  scene.value = 2;
+  skuForm.value.initSkuData(
+    categoryStore.$state.c1Id as number,
+    categoryStore.$state.c2Id as number,
+    row,
+  );
+  // console.log(2);
+};
+// sku子组件修改父组件scene为0
+const changeSkuScene = () => {
+  scene.value = 0;
+};
 const spuForm = ref();
+const skuForm = ref();
 </script>
 
 <template>
@@ -92,7 +107,12 @@ const spuForm = ref();
           />
           <el-table-column label="操作">
             <template #default="{ row }">
-              <el-button type="primary" size="small" icon="Plus" />
+              <el-button
+                type="primary"
+                size="small"
+                icon="Plus"
+                @click="addSku(row)"
+              />
               <!--              title="添加Spu"-->
               <el-button
                 @click="updateSpu(row)"
@@ -123,7 +143,11 @@ const spuForm = ref();
         v-show="scene == 1"
         @changeScene="changeScene"
       ></SpuForm>
-      <sku-form v-show="scene == 2"></sku-form>
+      <sku-form
+        v-show="scene == 2"
+        ref="skuForm"
+        @changeSkuScene="changeSkuScene"
+      ></sku-form>
     </el-card>
   </div>
 </template>
