@@ -5,9 +5,10 @@ import {
   HasSaleAttrResponseData,
   HasSpuResponseDate,
   SaleAttrResponseData,
-  SkuData, SkuInfoResponseData,
+  SkuData,
+  SkuInfoResponseData,
   SpuData,
-  SpuHasImage
+  SpuHasImage,
 } from "@/api/product/spu/type.ts";
 // import { TradeMarkUpOrSaOrDel_Response } from "@/api/product/trademark/type.ts";
 enum API {

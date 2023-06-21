@@ -100,9 +100,7 @@ const changeDefaultImg = (row) => {
 
 defineExpose({ initSkuData });
 //TODO 清除
-onBeforeUnmount(() => {
-
-})
+onBeforeUnmount(() => {});
 </script>
 
 <template>

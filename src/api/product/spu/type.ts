@@ -142,4 +142,3 @@ export interface SkuData {
 export interface SkuInfoResponseData extends ResponseData {
   data: SkuData[];
 }
-
