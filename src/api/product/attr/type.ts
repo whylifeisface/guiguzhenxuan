@@ -36,6 +36,7 @@ export interface Attr {
   categoryId: number | string;
   categoryLevel: number;
   attrValueList: AttrValueList;
+  orId: string; // 用于拼接SkU
 }
 //属性对象的数组ts类型
 export type AttrList = Attr[];

@@ -5,9 +5,9 @@ import {
   HasSaleAttrResponseData,
   HasSpuResponseDate,
   SaleAttrResponseData,
-  SkuData,
+  SkuData, SkuInfoResponseData,
   SpuData,
-  SpuHasImage,
+  SpuHasImage
 } from "@/api/product/spu/type.ts";
 // import { TradeMarkUpOrSaOrDel_Response } from "@/api/product/trademark/type.ts";
 enum API {
@@ -24,6 +24,10 @@ enum API {
   // 更新已有SPU
   UPDATE_SPU_URL = "/admin/product/saveSpuInfo",
   SPU_SAVE_URL = "/admin/product/saveSkuInfo",
+  //获取SKU的table列表信息
+  SPU_TABLE_INFO_URL = "/admin/product/findBySpuId/",
+  //删除
+  DELETE_URL = "/admin/product/deleteSpu/",
 }
 
 export const reqHasSpu = (
@@ -58,4 +62,14 @@ export const reqAddOrUpdateSpu = (spu: SpuData) => {
 
 export const reqSkuDataSave = (sku: SkuData) => {
   return request.post<never, defaultResponse>(API.SPU_SAVE_URL, sku);
+};
+
+export const reqSkuInfo = (skuId: number) => {
+  return request.get<never, SkuInfoResponseData>(
+    API.SPU_TABLE_INFO_URL + skuId,
+  );
+};
+
+export const reqDelete = (skuId: number) => {
+  return request.delete<never, defaultResponse>(API.DELETE_URL + skuId);
 };

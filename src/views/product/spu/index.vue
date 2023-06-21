@@ -4,8 +4,9 @@ import SkuForm from "@/views/product/spu/skuForm.vue";
 import Category from "@/components/Category/index.vue";
 import { ref, watch } from "vue";
 import { useCategoryStore } from "@/store/module/category.ts";
-import { reqHasSpu } from "@/api/product/spu";
-import { Records, SpuData } from "@/api/product/spu/type.ts";
+import { reqDelete, reqHasSpu, reqSkuInfo } from "@/api/product/spu";
+import { Records, SkuData, SpuData } from "@/api/product/spu/type.ts";
+import { ElMessage } from "element-plus";
 //场景数据控制Category显示
 const scene = ref(1); // 0 显示   1 添加或修改 2 添加SKU结构
 let pageNo = ref(1);
@@ -22,7 +23,7 @@ watch(
   },
 );
 const getHasSpu = async () => {
-  console.log(categoryStore);
+  // console.log(categoryStore, "categoryStore");
   const result = await reqHasSpu(
     pageNo.value,
     pageSize.value,
@@ -73,6 +74,32 @@ const addSku = (row: SpuData) => {
 const changeSkuScene = () => {
   scene.value = 0;
 };
+
+const skuInfo = ref<SkuData[]>([]);
+//展示SKU的dialog按钮
+const SkuInfo = async (row: SpuData) => {
+  console.log("row", row);
+  dialogVisibility.value = true;
+  let responseData = await reqSkuInfo(row.id as number);
+  if (responseData.code == 200) {
+    skuInfo.value = responseData.data;
+    console.log(responseData.data, "responseData.data");
+  } else {
+    console.log("error");
+  }
+};
+
+//删除按钮回调
+const deleteBtn = async (row, $index) => {
+  console.log("row", row);
+  let response = await reqDelete(row.id);
+  if (response.code == 200) {
+    ElMessage.success("删除成功");
+    record.value.splice($index, 1);
+  } else ElMessage.error(response.message + "  删除失败");
+};
+
+const dialogVisibility = ref(false);
 const spuForm = ref();
 const skuForm = ref();
 </script>
@@ -106,7 +133,7 @@ const skuForm = ref();
             show-overflow-tooltip
           />
           <el-table-column label="操作">
-            <template #default="{ row }">
+            <template #default="{ row, $index }">
               <el-button
                 type="primary"
                 size="small"
@@ -121,10 +148,50 @@ const skuForm = ref();
                 icon="Edit"
               />
               <!--              title="修改Spu"-->
-              <el-button type="info" size="small" icon="Search" />
+              <el-button
+                type="info"
+                size="small"
+                icon="Search"
+                @click="SkuInfo(row)"
+              />
               <!--              title[="查看SPU列表"-->
-              <el-button type="danger" size="small" icon="Delete" />
+              <el-button
+                type="danger"
+                size="small"
+                icon="Delete"
+                @click="deleteBtn(row, $index)"
+              />
               <!--              title="删除"-->
+              <el-dialog v-model="dialogVisibility">
+                <template #title>
+                  <h1>SKU列表</h1>
+                </template>
+                <el-table border :data="skuInfo">
+                  <el-table-column
+                    label="sku名字"
+                    prop="skuName"
+                  ></el-table-column>
+                  <el-table-column
+                    label="sku价格"
+                    prop="price"
+                  ></el-table-column>
+                  <el-table-column
+                    label="sku重量"
+                    prop="weight"
+                  ></el-table-column>
+                  <!-- //TODO http://47.93.148.192:8080/group1/M00/02/DA/rBHu8mGxPb-AQOTXAAAWgQNuXx0990.jpg 不显示-->
+                  <el-table-column label="sku图片">
+                    <template #default="{ row }">
+                      {{ row.imgUrl }}
+                      <img
+                        :src="row.imgUrl"
+                        alt="alt"
+                        style="width: 100%; height: 100%"
+                      />
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </el-dialog>
             </template>
           </el-table-column>
         </el-table>

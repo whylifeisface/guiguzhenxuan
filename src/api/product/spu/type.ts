@@ -98,6 +98,7 @@ export interface SaleAttrs {
   SaleAttrValueName?: string;
   spuSaleAttrValueList: SaleAttrValueList;
   saleAttrName?: string; // ? need
+  orId: string; //用于拼接SkuData数据 形式 saleAttrId:saleAttrValueId
 }
 //SPU已有的销售属性接口返回的ts类型
 export interface SaleAttrResponseData extends ResponseData {
@@ -135,5 +136,10 @@ export interface SkuData {
   skuAttrValueList?: SkuAttrValue[]; // ?
   skuDefaultImg: string;
   skuImageList?: []; //?
-  skuSaleAttrValueList: SkuSaleAttrValue[];
+  skuSaleAttrValueList?: SkuSaleAttrValue[];
 }
+
+export interface SkuInfoResponseData extends ResponseData {
+  data: SkuData[];
+}
+
