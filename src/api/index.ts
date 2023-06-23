@@ -11,8 +11,8 @@ enum API {
   LOGOUT_URL = "/admin/acl/index/logout",
 }
 export const reqLogin = (data: LoginFormData) =>
-  request.post<any, LoginResponseData>(API.LOGIN_URL, data);
+  request.post<never, LoginResponseData>(API.LOGIN_URL, data);
 export const reqUserInfo = () =>
-  request.get<any, userResponseData>(API.USERINFO_URL);
+  request.get<never, userResponseData>(API.USERINFO_URL);
 export const reqLogout = () =>
-  request.post<any, LoginoutResponseData>(API.LOGOUT_URL);
+  request.post<never, LoginoutResponseData>(API.LOGOUT_URL);

@@ -29,6 +29,7 @@ enum API {
   SPU_TABLE_INFO_URL = "/admin/product/findBySpuId/",
   //删除
   DELETE_URL = "/admin/product/deleteSpu/",
+  SPU_INFO = "/admin/product/getSpuById/",
 }
 
 export const reqHasSpu = (
@@ -74,3 +75,5 @@ export const reqSkuInfo = (skuId: number) => {
 export const reqDelete = (skuId: number) => {
   return request.delete<never, defaultResponse>(API.DELETE_URL + skuId);
 };
+export const reqSpuInfo = (spuId: number) =>
+  request.get<never, SaleAttrResponseData>(API.SPU_INFO + spuId);

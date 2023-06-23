@@ -27,6 +27,7 @@ export default defineConfig(({ command, mode }) => {
     server: {
       proxy: {
         [env.VITE_A]: {
+          // VITE_SERVE_USER
           target: env.VITE_SERVE,
           changeOrigin: true,
           rewrite: (path) => {
@@ -35,6 +36,14 @@ export default defineConfig(({ command, mode }) => {
         },
         [env.VITE_PRODUCT]: {
           target: env.VITE_SERVE_PRO,
+          changeOrigin: true,
+          rewrite: (path) => {
+            console.log(path);
+            return path.replace(/^\/api/, "");
+          },
+        },
+        [env.VITE_SERVE_USER]: {
+          target: env.VITE_SERVE,
           changeOrigin: true,
           rewrite: (path) => {
             console.log(path);
