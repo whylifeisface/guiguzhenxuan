@@ -11,9 +11,9 @@ export interface UserResponseData extends ResponseData {
   };
 }
 export interface UserType {
-  id: number;
+  id?: number;
   username: string;
-  passwd: string;
+  password: string;
   name: string;
   phone: null;
   createTime: string;

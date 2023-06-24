@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
-import { hasUser } from "@/api/user";
+import { hasUser, UpdateOrAddUser } from "@/api/user";
 import { UserType } from "@/api/user/type.ts";
 import { ElMessage, FormInstance, TableInstance } from "element-plus";
 
@@ -20,6 +20,14 @@ const getUser = async () => {
 // 添加user回调
 
 const addUser = () => {
+  const copy = {
+    id: 0,
+    username: "",
+    password: "",
+    name: "",
+  };
+  Object.assign(formParam, copy);
+  formRef.value?.resetFields();
   drawer.value = true;
 };
 const drawer = ref(true);
@@ -34,23 +42,68 @@ const pageSizeChange = () => {
   getUser();
 };
 const tableRef = ref<TableInstance>();
-const formParam = reactive({
-  username: "",
+const formParam = reactive<UserType>({
+  createTime: "",
   name: "",
-  passwd: "",
+  password: "",
+  phone: null,
+  roleName: "",
+  updateTime: "",
+  username: "",
 });
+
+//分配角色按钮回调
+const updateRole = () => {
+  roleDrawer.value = true;
+};
+
 //添加user 的 rule
 const formRule = {
   username: [{ trigger: "change", required: true, message: "必填字段" }],
   name: [{ trigger: "change", required: true, message: "必填字段" }],
-  passwd: [{ trigger: "change", required: true, message: "必填字段" }],
+  password: [{ trigger: "change", required: true, message: "必填字段" }],
 };
 const formRef = ref<FormInstance>();
 // form 表单提交 要先校验
 const save = async () => {
   console.log("111");
   await formRef.value?.validate();
+  let response = await UpdateOrAddUser(formParam);
+  if (response.code == 200) {
+    ElMessage.success(formParam.id ? "修改 " : "添加" + `成功`);
+    await getUser();
+  } else ElMessage.error(formParam.id ? "修改 " : "添加" + `失败`);
 };
+const UpdateUser = (row) => {
+  drawer.value = true;
+  Object.assign(formParam, row);
+  console.log(formParam, "formParam");
+};
+
+//  管理分配角色的drawer
+//控制 role 有关的 drawer是否显示
+const roleDrawer = ref<boolean>(false);
+//对应的职位列表 check group
+const positionList = ["销售", "前台", "财务", "boos"];
+
+//checkbox 是否全部选中
+const checkAll = ref<boolean>(true);
+//全选checkbox是否处于中间状态
+const indeterminate = ref<boolean>(false);
+//当是否全选改变时的回调
+const checkAllChange = () => {};
+// 对于选中哪几个职位(checkbox)
+const checkList = ref([]);
+const checkListChange = (value: string[]) => {
+  const length = value.length;
+  checkAll.value = length === positionList.length;
+  indeterminate.value = length > 0 && length < positionList.length;
+};
+//roleDrawer 确定按钮回调
+const confirmRole = () => {
+  roleDrawer.value = false;
+};
+
 </script>
 
 <template>
@@ -79,11 +132,27 @@ const save = async () => {
         <el-table-column label="创建时间" prop="createTime" />
         <el-table-column label="更新时间" prop="updateTime" />
         <el-table-column label="操作">
-          <el-button size="small" type="primary" icon="User">
-            分配角色
-          </el-button>
-          <el-button size="small" type="primary" icon="Edit">编辑</el-button>
-          <el-button size="small" type="primary" icon="Delete">删除</el-button>
+          <template #default="{ row }">
+            <el-button
+              size="small"
+              type="primary"
+              icon="User"
+              @click="updateRole"
+            >
+              分配角色
+            </el-button>
+            <el-button
+              size="small"
+              type="primary"
+              icon="Edit"
+              @click="UpdateUser(row)"
+            >
+              编辑
+            </el-button>
+            <el-button size="small" type="primary" icon="Delete">
+              删除
+            </el-button>
+          </template>
         </el-table-column>
       </el-table>
       <el-pagination
@@ -112,14 +181,51 @@ const save = async () => {
             <el-form-item label="用户密码" prop="passwd">
               <el-input
                 placeholder="请填写用户密码"
-                v-model="formParam.passwd"
+                v-model="formParam.password"
               />
             </el-form-item>
           </el-form>
         </template>
         <template #footer>
           <el-button type="primary" @click="save">保存</el-button>
-          <el-button>取消</el-button>
+          <el-button @click="drawer = false">取消</el-button>
+        </template>
+      </el-drawer>
+      <!--      分配角色静态-->
+      <el-drawer v-model="roleDrawer">
+        <template #header>
+          <h2>分配角色(职位)</h2>
+        </template>
+        <template #default>
+          <el-form>
+            <el-form-item>
+              <el-input :disabled="true" />
+            </el-form-item>
+            <el-form-item>
+              <el-checkbox
+                v-model="checkAll"
+                @change="checkAllChange"
+                :indeterminate="indeterminate"
+              >
+                全选
+              </el-checkbox>
+            </el-form-item>
+            <el-form-item>
+              <el-checkbox-group v-model="checkList" @change="checkListChange">
+                <el-checkbox
+                  v-for="item in positionList"
+                  :key="item"
+                  :label="item"
+                >
+                  {{ item }}
+                </el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </el-form>
+        </template>
+        <template #footer>
+          <el-button @click="roleDrawer = false">cancel</el-button>
+          <el-button @click="confirmRole" type="primary">confirm</el-button>
         </template>
       </el-drawer>
     </el-card>
