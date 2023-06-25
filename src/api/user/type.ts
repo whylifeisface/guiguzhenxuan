@@ -20,3 +20,21 @@ export interface UserType {
   updateTime: string;
   roleName: string;
 }
+export interface UserAssignResponseData extends ResponseData {
+  data: UserAssign;
+}
+export interface Role {
+  id: number;
+  createTime: string;
+  updateTime: string;
+  roleName: string;
+  remark: null;
+}
+export interface UserAssign {
+  assignRoles: Role[];
+  allRolesList: Role[];
+}
+export interface UserAssignSaveData {
+  roleIdList: number[];
+  userId: number;
+}

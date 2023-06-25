@@ -1,13 +1,85 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
-import { hasUser, UpdateOrAddUser } from "@/api/user";
-import { UserType } from "@/api/user/type.ts";
+import {
+  DeleteMultipleUserResponseData,
+  DeleteUser,
+  hasUser,
+  hasUserAssign,
+  SaveUserRole, SearchUser,
+  UpdateOrAddUser
+} from "@/api/user";
+import { Role, UserAssignSaveData, UserType } from "@/api/user/type.ts";
 import { ElMessage, FormInstance, TableInstance } from "element-plus";
+import { useLayoutSettingStore } from "@/store/module/setting.ts";
 
 const total = ref(1);
 const pageNo = ref(1);
 const pageSize = ref(3);
 const records = ref<UserType[]>([]);
+
+//搜索关键字
+const keyword = ref("");
+//搜索按钮回调
+const search = async () => {
+  pageNo.value = 1;
+  let responseData = await SearchUser(
+    pageNo.value,
+    pageSize.value,
+    keyword.value,
+  );
+  if (responseData.code == 200) {
+    ElMessage.success("成功");
+    records.value = [];
+    records.value.push(...responseData.data.records);
+  } else {
+    ElMessage.error("失败");
+  }
+  keyword.value = "";
+};
+//重置按钮回调
+let store = useLayoutSettingStore();
+const reset = () => {
+  store.$state.refresh = !store.$state.refresh;
+};
+//删除多个用户的id list集合
+const deleteUserIdList = ref<number[]>([]);
+//确定删除列表行的回调
+const conFirmDeleteUser = async (row) => {
+  console.log(row, "row");
+  let response = await DeleteUser(row.id);
+  if (response.code == 200) {
+    ElMessage.success("删除成功");
+    await getUser();
+  } else {
+    ElMessage.error("删除失败");
+  }
+  roleDrawer.value = false;
+};
+
+// 批量删除按钮回调
+const DeleteMultipleUser = async () => {
+  // deleteUserIdList.value =
+  const idList = deleteUserIdList.value.map((value) => {
+    if ("id" in value) return value.id;
+    else return value;
+  });
+  //TODO delete请求如何携带payload
+  let defaultResponse = await DeleteMultipleUserResponseData(idList);
+  if (defaultResponse.code == 200) {
+    ElMessage.success("删除成功");
+  } else {
+    ElMessage.error("删除失败");
+  }
+};
+const tableSelectionChange = (selection) => {
+  console.log(selection, "selection");
+  //先清空数组
+  deleteUserIdList.value = [];
+  //解构数组 不解构对象
+  if (selection.length && selection.length > 1)
+    deleteUserIdList.value.push(...selection);
+  else deleteUserIdList.value.push(selection);
+};
 const getUser = async () => {
   let responseData = await hasUser(pageNo.value, pageSize.value);
   if (responseData.code == 200) {
@@ -53,7 +125,29 @@ const formParam = reactive<UserType>({
 });
 
 //分配角色按钮回调
-const updateRole = () => {
+const updateRole = async (row) => {
+  const empty = {
+    createTime: "",
+    name: "",
+    password: "",
+    phone: null,
+    roleName: "",
+    updateTime: "",
+    username: "",
+  };
+  //清空上次的数据
+  Object.assign(roleData, empty);
+  positionList.value = [];
+  checkList.value = [];
+
+  // console.log(row, "row");
+  Object.assign(roleData, row);
+  let response = await hasUserAssign(row.id);
+  if (response.code == 200) {
+    positionList.value.push(...response.data.allRolesList);
+    checkList.value.push(...response.data.assignRoles);
+  }
+  // console.log(checkList, " checkList");
   roleDrawer.value = true;
 };
 
@@ -73,18 +167,29 @@ const save = async () => {
     ElMessage.success(formParam.id ? "修改 " : "添加" + `成功`);
     await getUser();
   } else ElMessage.error(formParam.id ? "修改 " : "添加" + `失败`);
+  drawer.value = false;
 };
 const UpdateUser = (row) => {
   drawer.value = true;
   Object.assign(formParam, row);
-  console.log(formParam, "formParam");
+  // console.log(formParam, "formParam");
 };
 
 //  管理分配角色的drawer
 //控制 role 有关的 drawer是否显示
 const roleDrawer = ref<boolean>(false);
+const roleData = reactive<UserType>({
+  createTime: "",
+  name: "",
+  password: "",
+  phone: null,
+  roleName: "",
+  updateTime: "",
+  username: "",
+});
+
 //对应的职位列表 check group
-const positionList = ["销售", "前台", "财务", "boos"];
+const positionList = ref<Role[]>([]);
 
 //checkbox 是否全部选中
 const checkAll = ref<boolean>(true);
@@ -93,17 +198,32 @@ const indeterminate = ref<boolean>(false);
 //当是否全选改变时的回调
 const checkAllChange = () => {};
 // 对于选中哪几个职位(checkbox)
-const checkList = ref([]);
+const checkList = ref<Role[]>([]);
 const checkListChange = (value: string[]) => {
   const length = value.length;
-  checkAll.value = length === positionList.length;
-  indeterminate.value = length > 0 && length < positionList.length;
+  checkAll.value = length === positionList.value.length;
+  indeterminate.value = length > 0 && length < positionList.value.length;
 };
 //roleDrawer 确定按钮回调
-const confirmRole = () => {
+const confirmRole = async () => {
   roleDrawer.value = false;
+  const roleIdList = checkList.value.map((value) => {
+    return value.id;
+  });
+  // console.log(roleIdList, "roleIdList");
+  const data: UserAssignSaveData = {
+    roleIdList: roleIdList,
+    userId: roleData.id as number,
+  };
+  // console.log("data ", data);
+  let response = await SaveUserRole(data);
+  if (response.code == 200) {
+    ElMessage.success("成功");
+    await getUser();
+  } else {
+    ElMessage.error("失败");
+  }
 };
-
 </script>
 
 <template>
@@ -111,18 +231,29 @@ const confirmRole = () => {
     <el-card style="margin: 10px 0">
       <el-form :inline="true" class="user-form">
         <el-form-item label="用户名:">
-          <el-input placeholder="请输入用户名" />
+          <el-input placeholder="请输入用户名" v-model="keyword" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">搜索</el-button>
-          <el-button>重置</el-button>
+          <el-button type="primary" @click="search">搜索</el-button>
+          <el-button @click="reset">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
     <el-card>
       <el-button type="primary" @click="addUser">添加</el-button>
-      <el-button type="danger">批量删除</el-button>
-      <el-table ref="tableRef" border :data="records">
+      <el-button
+        @click="DeleteMultipleUser"
+        type="danger"
+        :disabled="deleteUserIdList.length == 0"
+      >
+        批量删除
+      </el-button>
+      <el-table
+        ref="tableRef"
+        border
+        :data="records"
+        @selection-change="tableSelectionChange"
+      >
         <el-table-column type="selection" />
         <el-table-column label="#" type="index" />
         <el-table-column label="id" prop="id"></el-table-column>
@@ -137,21 +268,28 @@ const confirmRole = () => {
               size="small"
               type="primary"
               icon="User"
-              @click="updateRole"
+              @click="updateRole(row)"
             >
               分配角色
             </el-button>
             <el-button
               size="small"
-              type="primary"
+              type="info"
               icon="Edit"
               @click="UpdateUser(row)"
             >
               编辑
             </el-button>
-            <el-button size="small" type="primary" icon="Delete">
-              删除
-            </el-button>
+            <el-popconfirm
+              @confirm="conFirmDeleteUser(row)"
+              :title="`您确定要删除${row.name}吗?`"
+            >
+              <template #reference>
+                <el-button size="small" type="danger" icon="Delete">
+                  删除
+                </el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -199,7 +337,7 @@ const confirmRole = () => {
         <template #default>
           <el-form>
             <el-form-item>
-              <el-input :disabled="true" />
+              <el-input :disabled="true" v-model="roleData.name" />
             </el-form-item>
             <el-form-item>
               <el-checkbox
@@ -214,10 +352,10 @@ const confirmRole = () => {
               <el-checkbox-group v-model="checkList" @change="checkListChange">
                 <el-checkbox
                   v-for="item in positionList"
-                  :key="item"
+                  :key="item.id"
                   :label="item"
                 >
-                  {{ item }}
+                  {{ item.roleName }}
                 </el-checkbox>
               </el-checkbox-group>
             </el-form-item>

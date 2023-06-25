@@ -3,9 +3,7 @@ import { onMounted, ref } from "vue";
 import { hasSKU, reqDeleteSku } from "@/api/product/sku";
 import { skuRecord } from "@/api/product/sku/type.ts";
 import { ElMessage } from "element-plus";
-import {
-  reqSpuInfo,
-} from "@/api/product/spu";
+import { reqSpuInfo } from "@/api/product/spu";
 import { SpuImage } from "@/api/product/spu/type.ts";
 
 const total = ref(0);
