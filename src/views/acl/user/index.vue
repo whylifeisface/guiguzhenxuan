@@ -5,7 +5,8 @@ import {
   DeleteUser,
   hasUser,
   hasUserAssign,
-  SaveUserRole, SearchUser,
+  SaveUserRole,
+  SearchUser,
   UpdateOrAddUser
 } from "@/api/user";
 import { Role, UserAssignSaveData, UserType } from "@/api/user/type.ts";
@@ -45,7 +46,7 @@ const reset = () => {
 const deleteUserIdList = ref<number[]>([]);
 //确定删除列表行的回调
 const conFirmDeleteUser = async (row) => {
-  console.log(row, "row");
+  // console.log(row, "row");
   let response = await DeleteUser(row.id);
   if (response.code == 200) {
     ElMessage.success("删除成功");
@@ -72,7 +73,7 @@ const DeleteMultipleUser = async () => {
   }
 };
 const tableSelectionChange = (selection) => {
-  console.log(selection, "selection");
+  // console.log(selection, "selection");
   //先清空数组
   deleteUserIdList.value = [];
   //解构数组 不解构对象
@@ -196,10 +197,14 @@ const checkAll = ref<boolean>(true);
 //全选checkbox是否处于中间状态
 const indeterminate = ref<boolean>(false);
 //当是否全选改变时的回调
-const checkAllChange = () => {};
+const checkAllChange = () => {
+  indeterminate.value = false;
+  checkAll.value = !checkAll.value;
+};
 // 对于选中哪几个职位(checkbox)
 const checkList = ref<Role[]>([]);
 const checkListChange = (value: string[]) => {
+  console.log("111");
   const length = value.length;
   checkAll.value = length === positionList.value.length;
   indeterminate.value = length > 0 && length < positionList.value.length;
