@@ -38,3 +38,21 @@ export interface UserAssignSaveData {
   roleIdList: number[];
   userId: number;
 }
+export interface PermissionListResponseData extends ResponseData {
+  data: PermissionNode[];
+}
+export interface PermissionNode {
+  id: number;
+  label?: string;
+  createTime: string;
+  updateTime: string;
+  pid: number;
+  name: string;
+  code: null;
+  toCode: null;
+  type: number;
+  status: null;
+  level: number;
+  select?: boolean;
+  children: PermissionNode[];
+}
