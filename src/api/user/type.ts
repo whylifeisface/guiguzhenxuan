@@ -24,7 +24,7 @@ export interface UserAssignResponseData extends ResponseData {
   data: UserAssign;
 }
 export interface Role {
-  id: number;
+  id?: number;
   createTime: string;
   updateTime: string;
   roleName: string;

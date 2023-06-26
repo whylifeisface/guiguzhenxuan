@@ -7,7 +7,7 @@ import {
   hasUserAssign,
   SaveUserRole,
   SearchUser,
-  UpdateOrAddUser
+  UpdateOrAddUser,
 } from "@/api/user";
 import { Role, UserAssignSaveData, UserType } from "@/api/user/type.ts";
 import { ElMessage, FormInstance, TableInstance } from "element-plus";
@@ -166,6 +166,8 @@ const save = async () => {
   let response = await UpdateOrAddUser(formParam);
   if (response.code == 200) {
     ElMessage.success(formParam.id ? "修改 " : "添加" + `成功`);
+    //如果修改的是自己的密码 通过重新刷新 请用户去重新登录
+    window.location.reload();
     await getUser();
   } else ElMessage.error(formParam.id ? "修改 " : "添加" + `失败`);
   drawer.value = false;
