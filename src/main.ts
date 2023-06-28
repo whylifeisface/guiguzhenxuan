@@ -16,7 +16,8 @@ import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 import "./permission.ts";
 // pinia
 import { pinia } from "@/store";
-
+//暗黑模式
+import "element-plus/theme-chalk/dark/css-vars.css";
 const app = createApp(App);
 app.use(ElementPlus, {
   locale: zhCn,

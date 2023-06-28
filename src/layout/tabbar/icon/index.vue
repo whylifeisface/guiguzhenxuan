@@ -2,6 +2,7 @@
 import { useLayoutSettingStore } from "@/store/module/setting.ts";
 import { useRouter, useRoute } from "vue-router";
 import { useUserStore } from "@/store/module/user.ts";
+import { ref } from "vue";
 // 用户头像和名字
 let userStore = useUserStore();
 const layoutSettingStroe = useLayoutSettingStore();
@@ -27,13 +28,80 @@ const logout = async () => {
   await $router.push({ path: "/login", query: { redirect: $route.path } });
   console.log(123);
 };
+
+//setting 按钮
+const color = ref("rgba(255,69,0,0.68)");
+
+const predefineColors = ref([
+  "#ff4500",
+  "#ff8c00",
+  "#ffd700",
+  "#90ee90",
+  "#00ced1",
+  "#1e90ff",
+  "#c71585",
+  "rgba(255, 69, 0, 0.68)",
+  "rgb(255, 120, 0)",
+  "hsv(51, 100, 98)",
+  "hsva(120, 40, 94, 0.5)",
+  "hsl(181, 100%, 37%)",
+  "hsla(209, 100%, 56%, 0.73)",
+  "#c7158577",
+]);
+const value = ref(false);
+const changeDark = (value) => {
+  //获取html根节点
+  let htmlElement = document.documentElement;
+  if (value) {
+    htmlElement.classList.add("dark");
+  } else {
+    htmlElement.classList.remove("dark");
+  }
+};
+const colorChange = () => {
+  let htmlElement = document.documentElement;
+  htmlElement.style.setProperty("--el-color-primary", color.value);
+};
 </script>
 
 <template>
   <div>
     <el-button size="small" icon="Refresh" circle @click="updateRefresh" />
     <el-button size="small" icon="FullScreen" circle @click="fullScreen" />
-    <el-button size="small" icon="Setting" circle />
+    <el-popover
+      placement="bottom"
+      :width="300"
+      content=""
+      trigger="hover"
+      title="主题设置"
+    >
+      <!--      表单元素-->
+      <el-form>
+        <el-form-item label="主题颜色">
+          <el-color-picker
+            @change="colorChange"
+            v-model="color"
+            show-alpha
+            :predefine="predefineColors"
+          />
+        </el-form-item>
+        <el-form-item label="暗黑模式">
+          <!--          el- -->
+          <el-switch
+            @change="changeDark"
+            style="margin-left: 24px"
+            inline-prompt
+            v-model="value"
+            size="small"
+            active-icon="Moon"
+            inactive-icon="Sunny"
+          />
+        </el-form-item>
+      </el-form>
+      <template #reference>
+        <el-button size="small" icon="Setting" circle />
+      </template>
+    </el-popover>
     <!--    TODO img 和 span 不居中-->
     <img
       :src="userStore.avatar"
