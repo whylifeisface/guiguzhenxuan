@@ -4,6 +4,9 @@ import Top from "./component/top/index.vue";
 import Age from "./component/age/index.vue";
 import Tourist from "./component/tourist/index.vue";
 import Sex from "./component/sex/index.vue";
+import Map from "./component/map/index.vue";
+import Line from "./component/line/index.vue";
+
 
 // 数据大屏组件
 const screen = ref();
@@ -34,7 +37,10 @@ const getScale = (w = 1920, h = 1080) => {
           <Sex class="Sex" />
           <Age class="Age" />
         </div>
-        <div class="center"></div>
+        <div class="center">
+          <Map />
+          <Line />
+        </div>
         <div class="right"></div>
       </div>
     </div>
