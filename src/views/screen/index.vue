@@ -7,7 +7,6 @@ import Sex from "./component/sex/index.vue";
 import Map from "./component/map/index.vue";
 import Line from "./component/line/index.vue";
 
-
 // 数据大屏组件
 const screen = ref();
 onMounted(() => {
