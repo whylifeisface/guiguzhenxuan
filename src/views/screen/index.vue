@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted } from "vue"; 
 import Top from "./component/top/index.vue";
 import Age from "./component/age/index.vue";
 import Tourist from "./component/tourist/index.vue";
 import Sex from "./component/sex/index.vue";
+// 中间
 import Map from "./component/map/index.vue";
 import Line from "./component/line/index.vue";
+//右侧
+import Rank from "./component/rank/index.vue";
+import Year from "./component/year/index.vue";
+import Couter from "./component/couter/index.vue";
 
 // 数据大屏组件
 const screen = ref();
@@ -40,7 +45,11 @@ const getScale = (w = 1920, h = 1080) => {
           <Map />
           <Line />
         </div>
-        <div class="right"></div>
+        <div class="right">
+          <Rank class="rank"></Rank>
+          <Year class="year"></Year>
+          <Couter class="couter"></Couter>
+        </div>
       </div>
     </div>
   </div>
@@ -90,6 +99,20 @@ const getScale = (w = 1920, h = 1080) => {
 
       .center {
         flex: 2;
+      }
+      .right {
+        display: flex;
+        flex-direction: column;
+        .rank {
+          flex: 1;
+        }
+        .year {
+          flex: 1;
+
+        }
+        .couter {
+          flex: 1;
+        }
       }
     }
   }
