@@ -22,6 +22,8 @@ const app = createApp(App);
 app.use(ElementPlus, {
   locale: zhCn,
 });
+import { isHasButton } from "@/directive/has.ts";
+isHasButton(app);
 app.use(globalComponent).use(router).use(pinia);
 app.mount("#app");
 import "@/style/index.scss";
