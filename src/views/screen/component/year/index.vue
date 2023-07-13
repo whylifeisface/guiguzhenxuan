@@ -22,7 +22,7 @@ onMounted(() => {
       type: "category",
       show: false,
     },
-    yAxis: { 
+    yAxis: {
       show: false,
     },
     grid: {
@@ -42,13 +42,11 @@ onMounted(() => {
         },
         itemStyle: {
           color: "canyon",
-          
-        }
+        },
       },
     ],
   });
-})
-
+});
 </script>
 
 <style scoped lang="scss">

@@ -24,7 +24,7 @@ onMounted(() => {
       },
       axiosTick: {
         show: true,
-      }
+      },
     },
     grid: {
       left: 40,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue"; 
+import { ref, onMounted } from "vue";
 import Top from "./component/top/index.vue";
 import Age from "./component/age/index.vue";
 import Tourist from "./component/tourist/index.vue";
@@ -108,7 +108,6 @@ const getScale = (w = 1920, h = 1080) => {
         }
         .year {
           flex: 1;
-
         }
         .couter {
           flex: 1;
