@@ -44,15 +44,7 @@ const route: RouteRecordRaw[] = [
       hidden: true,
     },
   },
-  {
-    path: "/:pathMath(.*)*", //丢失页面
-    redirect: "/404",
-    name: "any",
-    meta: {
-      title: "login",
-      hidden: true,
-    },
-  },
+
   {
     path: "/screen",
     component: () => import("@/views/screen/index.vue"),
@@ -63,6 +55,77 @@ const route: RouteRecordRaw[] = [
       icon: "Platform",
     },
   },
+];
+//常量路由
+export const staticRoute = [
+  {
+    path: "/login", //登录页面
+    component: () => import("@/views/login/index.vue"),
+    name: "login",
+    meta: {
+      title: "login",
+      hidden: true, //在菜单是否显示
+      icon: "Promotion", //
+    },
+  },
+  {
+    path: "/", //主页面
+    component: () => import("@/layout/index.vue"),
+    name: "layout",
+    meta: {
+      title: "layout",
+      hidden: false,
+      icon: "Avatar",
+    },
+    redirect: "/home",
+    children: [
+      {
+        path: "/home",
+        component: () => import("@/views/home/index.vue"),
+        meta: {
+          title: "首页",
+          hidden: false,
+          icon: "homeFilled",
+        },
+      },
+    ],
+  },
+  {
+    path: "/404", //丢失页面
+    component: () => import("@/views/404/index.vue"),
+    name: "404",
+    meta: {
+      title: "404",
+      hidden: true,
+    },
+  },
+
+  {
+    path: "/screen",
+    component: () => import("@/views/screen/index.vue"),
+    name: "Screen",
+    meta: {
+      title: "数据大屏",
+      hidden: false,
+      icon: "Platform",
+    },
+  },
+];
+//任意路由
+export const anyRoute = [
+  {
+    path: "/:pathMath(.*)*", //丢失页面
+    redirect: "/404",
+    name: "any",
+    meta: {
+      title: "login",
+      hidden: true,
+    },
+  },
+];
+export const constantRoute = route;
+//异步路由
+export const asyncRoute = [
   {
     path: "/acl",
     component: () => import("@/layout/index.vue"),
@@ -144,4 +207,3 @@ const route: RouteRecordRaw[] = [
     ],
   },
 ];
-export const constantRoute = route;

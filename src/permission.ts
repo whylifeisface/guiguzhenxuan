@@ -1,7 +1,7 @@
 //路由鉴权
 import { router } from "@/router/index.ts";
 //包内有样式
-// @ts-expect-error
+// @ts-ignore
 import nprogress from "nprogress";
 import "nprogress/nprogress.css";
 import { pinia } from "@/store";
@@ -39,7 +39,7 @@ router.beforeEach(async (to, _, next) => {
         else {
           try {
             await userStore.userInfo();
-            next();
+            next({ ...to });
           } catch (e) {
             console.log(e);
             //token 过期

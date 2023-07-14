@@ -5,10 +5,22 @@ import type { LoginFormData } from "@/api/type";
 import { LoginResponseData } from "@/api/type";
 import { UserState } from "./types/types";
 import { GET_TOKEN, SET_TOKEN, REMOVE_TOKEN } from "@/utils/token.ts";
-
+//@ts-ignore
+import cloneDeep from "lodash";
 //引入常量路由
-import { constantRoute } from "@/router/route.ts";
-
+import { anyRoute, asyncRoute, constantRoute } from "@/router/route.ts";
+import { router } from "@/router";
+//过滤异步路由
+function filterAsyncRoute(asyncRoute: any, routes: any) {
+  return asyncRoute.filters((item: any) => {
+    if (routes.includes(item.name)) {
+      if (item.children && item.children.length > 0) {
+        item.children = filterAsyncRoute(item, routes);
+      }
+      return true;
+    }
+  });
+}
 const useUserStore = defineStore("User", {
   state: (): UserState => {
     return {
@@ -31,6 +43,7 @@ const useUserStore = defineStore("User", {
         this.$state.token = token;
         SET_TOKEN(token);
         //保证async 放回一个成功的promise
+
         return "ok";
       } else {
         return Promise.reject(new Error(result.message));
@@ -43,6 +56,13 @@ const useUserStore = defineStore("User", {
       if (data.code == 200) {
         this.username = data.data.name;
         this.avatar = data.data.avatar;
+        const useRoutes = filterAsyncRoute(
+          cloneDeep(asyncRoute),
+          data.data.routes,
+        );
+        this.menuRoutes = [...useRoutes, ...constantRoute, ...anyRoute];
+        [...useRoutes, anyRoute].forEach((route) => router.addRoute(route));
+        console.log("menuRoutes" + this.menuRoutes);
         return "ok";
       } else {
         //失败处理
