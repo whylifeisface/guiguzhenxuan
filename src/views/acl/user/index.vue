@@ -45,7 +45,7 @@ const reset = () => {
 //删除多个用户的id list集合
 const deleteUserIdList = ref<number[]>([]);
 //确定删除列表行的回调
-const conFirmDeleteUser = async (row) => {
+const conFirmDeleteUser = async (row: any) => {
   // console.log(row, "row");
   let response = await DeleteUser(row.id);
   if (response.code == 200) {
@@ -126,7 +126,7 @@ const formParam = reactive<UserType>({
 });
 
 //分配角色按钮回调
-const updateRole = async (row) => {
+const updateRole = async (row: any) => {
   const empty = {
     createTime: "",
     name: "",
@@ -172,7 +172,7 @@ const save = async () => {
   } else ElMessage.error(formParam.id ? "修改 " : "添加" + `失败`);
   drawer.value = false;
 };
-const UpdateUser = (row) => {
+const UpdateUser = (row: unknown) => {
   drawer.value = true;
   Object.assign(formParam, row);
   // console.log(formParam, "formParam");

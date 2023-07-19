@@ -99,7 +99,7 @@ const login = async () => {
 //     callBack(new Error("长度为5"));
 //   }
 // };
-const validatePassword = (rule, value, callback) => {
+const validatePassword = (_: any, value: any, callback: (error?: string | Error) => void) => {
   if (value.length > 4) {
     callback();
   } else {
@@ -113,7 +113,7 @@ const rule = reactive<FormRules>({
   ],
   password: [
     {
-      require: true,
+      required: true,
       min: 4,
       max: 15,
       message: "密码不能少于8位",

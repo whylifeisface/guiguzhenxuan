@@ -122,13 +122,21 @@ const OnUploadSuccess: UploadProps["onSuccess"] = (response) => {
   formRef.value?.clearValidate("logoUrl");
 };
 // tmName 校验规则  表单元素blur 时触发  需要tmName 长度大于2
-const validatorTmName = (_, value, callback) => {
+const validatorTmName = (
+  _: unknown,
+  value: any,
+  callback: (error?: string | Error) => void,
+) => {
   value.trim().length >= 2
     ? callback()
     : callback(new Error("品牌名称需要大于2位"));
 };
 const formRef = ref<FormInstance>();
-const validatorLogoUrl = (_, value, callback) => {
+const validatorLogoUrl = (
+  _: unknown,
+  value: any,
+  callback: (error?: string | Error) => void,
+) => {
   value ? callback() : callback(new Error("请先上传文件"));
 };
 // 表单校验规则

@@ -12,8 +12,8 @@ import * as echarts from "echarts";
 import { onMounted, ref } from "vue";
 const lines = ref();
 onMounted(() => {
-  echarts.init(lines.value);
-  echarts.setOption({
+  let echartsType = echarts.init(lines.value);
+  echartsType.setOption({
     title: {
       text: "景区排行",
       left: "50%",

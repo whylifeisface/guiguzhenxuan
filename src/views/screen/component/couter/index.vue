@@ -67,4 +67,5 @@ onMounted(() => {
   .charts {
     height: 260px;
   }
-}</style>
+}
+</style>

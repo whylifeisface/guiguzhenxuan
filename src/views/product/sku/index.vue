@@ -35,7 +35,7 @@ onMounted(() => {
   hasSkuData();
 });
 //修改上架下价的按钮回调
-const updateSaleHandler = (row) => {
+const updateSaleHandler = (row: any) => {
   if (row.isSale == 1) {
     row.isSale = 0;
     ElMessage.warning(`${row.skuName}下架成功`);
@@ -49,7 +49,7 @@ const imageList = ref<SpuImage[]>([]);
 // 右侧抽的控制
 const drawer = ref(true);
 const drawerData = ref();
-const drawerShow = async (row) => {
+const drawerShow = async (row: any) => {
   let responseData = await reqSpuInfo(row.spuId as number);
   if (responseData.code == 200) {
     drawerData.value = responseData.data;
@@ -57,7 +57,7 @@ const drawerShow = async (row) => {
     drawer.value = false;
   }
   drawer.value = true;
-  drawerData.value.spuSaleAttrList.forEach((val) => {
+  drawerData.value.spuSaleAttrList.forEach((val: any) => {
     // console.log(val," val");
     if (drawerData.value.spuSaleAttrValueList == undefined)
       drawerData.value.spuSaleAttrValueList = [];
@@ -104,7 +104,7 @@ const drawerShow = async (row) => {
 //   // console.log(drawerData.value, "drawerData");
 // };
 
-const deleteSku = async (row) => {
+const deleteSku = async (row: any) => {
   console.log(row);
   records.value.splice(row, 1);
   let response = await reqDeleteSku(row.spuId);

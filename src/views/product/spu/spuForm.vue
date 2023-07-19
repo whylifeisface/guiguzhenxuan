@@ -14,7 +14,7 @@ import {
 } from "@/api/product/spu";
 import { TradeMark } from "@/api/product/trademark/type.ts";
 import { computed, ref } from "vue";
-import { ElMessage } from "element-plus";
+import { ElMessage, UploadFile, UploadRawFile } from "element-plus";
 
 const $emit = defineEmits(["changeScene"]);
 // 点击取消按钮通知父组件切换
@@ -71,7 +71,7 @@ let dialogVisible = ref(false);
 
 const dialogImageUrl = ref("");
 //照片墙点击预览回调
-const handlePictureCardPreview = (file) => {
+const handlePictureCardPreview = (file: UploadFile) => {
   //弹出对话框展示超大图片
   dialogVisible.value = true;
   if (file.url != null) {
@@ -84,7 +84,8 @@ const handleRemove = () => {
 };
 
 //照片墙上传前回调 约束文件大小和样式
-const beforeUpload = (file) => {
+const beforeUpload = (file: UploadRawFile) => {
+  if (!file) return;
   if (
     file.type == "image/png" ||
     file.type == "image/jpeg" ||
@@ -133,9 +134,10 @@ const initAddSpu = async () => {
 const addAttrValue = () => {
   let [baseSaleAttrId, saleAttrName] = sale.value.split(":");
   saleAttr.value.push({
-    baseSaleAttrId: baseSaleAttrId as number,
+    baseSaleAttrId: baseSaleAttrId as unknown as number,
     saleAttrName: saleAttrName,
     spuSaleAttrValueList: [],
+    orId: "",
   });
   flagList.value.push({ flag: true });
   sale.value = "";
@@ -155,7 +157,7 @@ const unSelectSaleAttr = computed(() => {
 });
 const sale = ref("");
 
-const toEdit = ($index) => {
+const toEdit = ($index: number) => {
   // console.log(spuParams.value);
   // console.log(flagList);
   flagList.value[$index].flag = false;
@@ -165,7 +167,7 @@ const toEdit = ($index) => {
 
 // 添加销售属性值tag input框绑定的值
 // const InputText = ref("");
-const blurFu = (list, $index) => {
+const blurFu = (list: any, $index: number) => {
   //校验输入内容合法性  不能为空  不能重复
   //合法则加入param
   // console.log(spuParams);

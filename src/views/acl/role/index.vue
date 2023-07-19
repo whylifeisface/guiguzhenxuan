@@ -12,7 +12,7 @@ import {
 import { ElMessage, FormInstance, FormRules } from "element-plus";
 import { PermissionNode, Role } from "@/api/user/type.ts";
 import { useLayoutSettingStore } from "@/store/module/setting.ts";
-import { Tree } from "element-plus/es/components/tree-v2/src/types";
+// import { Tree } from "element-plus/es/components/tree-v2/src/types";
 
 //----------------------------------搜索按钮组件
 let store = useLayoutSettingStore();
