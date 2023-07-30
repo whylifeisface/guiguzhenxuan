@@ -13,8 +13,8 @@ import * as echarts from "echarts";
 import { onMounted, ref } from "vue";
 const charts = ref();
 onMounted(() => {
-  echarts.init(charts.value);
-  echarts.setOption({
+  let eChartsType = echarts.init(charts.value);
+  eChartsType.setOption({
     title: {
       text: "",
     },

@@ -4,11 +4,17 @@ import {
   reqSpuHasSaleAttr,
   reqSpuImageList,
 } from "@/api/product/spu";
-import { SkuData, SpuData } from "@/api/product/spu/type.ts";
+import {
+  SaleAttrs,
+  SkuAttrValue,
+  SkuData,
+  SpuData,
+  SpuImage,
+} from "@/api/product/spu/type.ts";
 import { reqAttr } from "@/api/product/attr";
 import { onBeforeUnmount, reactive, ref, unref } from "vue";
 import { ElMessage, TableInstance } from "element-plus";
-
+import { AttrList } from "@/api/product/attr/type";
 const skuData = reactive<SkuData>({
   category3Id: 0,
   price: 0,
@@ -40,9 +46,9 @@ const initSkuData = async (c1Id: number, c2Id: number, sku: SpuData) => {
     saleAttrList.value = saleAttrResponseData.data;
 };
 
-const imageList = ref([]);
-const attrList = ref([]);
-const saleAttrList = ref([]);
+const imageList = ref<SpuImage[]>([]);
+const attrList = ref<AttrList>([]);
+const saleAttrList = ref<SaleAttrs[]>([]);
 const $emit = defineEmits(["changeSkuScene"]);
 
 const cancel = () => {
@@ -57,10 +63,11 @@ const tidyAttr = () => {
         skuData.skuAttrValueList = [];
       }
       // console.log(skuData.skuAttrValueList, "skuAttrValueList");
-      skuData.skuAttrValueList.push({
-        attrId,
-        valueId: id,
-      });
+      const obj: SkuAttrValue = {
+        attrId: attrId as unknown as number,
+        valueId: id as unknown as number,
+      };
+      skuData.skuAttrValueList?.push(obj);
     }
   });
   saleAttrList.value.map((value) => {
@@ -70,8 +77,8 @@ const tidyAttr = () => {
         skuData.skuAttrValueList = [];
       }
       skuData.skuSaleAttrValueList?.push({
-        saleAttrId: id,
-        saleAttrValueId: baseSaleAttrId,
+        saleAttrId: id as unknown as number,
+        saleAttrValueId: baseSaleAttrId as unknown as number,
       });
     }
   });
@@ -90,7 +97,7 @@ const save = async () => {
 //控制table实例用来控制全选全不选
 const tableRef = ref<TableInstance>();
 //table 修改默认按钮回调;
-const changeDefaultImg = (row) => {
+const changeDefaultImg = (row: unknown) => {
   console.log(tableRef.value, "tableRef");
   imageList.value.forEach((value) => {
     tableRef.value?.toggleRowSelection(value, false);
@@ -100,7 +107,9 @@ const changeDefaultImg = (row) => {
 
 defineExpose({ initSkuData });
 //TODO 清除
-onBeforeUnmount(() => {});
+onBeforeUnmount(() => {
+  return;
+});
 </script>
 
 <template>

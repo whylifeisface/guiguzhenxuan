@@ -45,7 +45,7 @@ const addAttr = () => {
   nextTick(() => elInput.value?.focus());
 };
 //table中修改按钮回调
-const updateAttr = (row) => {
+const updateAttr = (row: any) => {
   scene.value = 1;
   //将已有的属性赋值给attrParam 浅拷贝 只是对象的应用 会使取消修改 数据库没改 前端数据修改了
   Object.assign(attrParam, JSON.parse(JSON.stringify(row)));
@@ -54,16 +54,17 @@ const updateAttr = (row) => {
 const cancel = () => {
   scene.value = 0;
 };
-const inputArr = [];
+const inputArr: { focus: () => void; }[] = [];
 //收集新增的属性的数据
 let attrParam = reactive<Attr>({
-  attrName: "", //新增属性名
-  attrValueList: [], //新增属性数组
-  categoryId: "", //三级分类Id
-  categoryLevel: 3, //代表的是三级分类
+  attrName: "",
+  attrValueList: [],
+  categoryId: "",
+  categoryLevel: 3,
+  orId: ""
 });
 
-const addAttrTable = (index: number) => {
+const addAttrTable = () => {
   attrParam.attrValueList.push({ valueName: "", flag: true });
   nextTick(() => {
     //每次添加聚焦最后一个
@@ -87,7 +88,7 @@ const save = async () => {
 };
 //定义一个响应式的数据控制 form input 编辑模式
 //表单失去焦点回调
-const toLook = (row, $index) => {
+const toLook = (row: { flag: boolean; valueName: string; }, $index: number) => {
   row.flag = false;
   //过滤条件1 什么都没输入就删除对应的input 防止div 高度为0 无法进入编辑模式
   if (row.valueName.trim() == "") {
@@ -105,7 +106,7 @@ const toLook = (row, $index) => {
   });
 };
 //属性值div点击事件
-const toEdit = (row, $index) => {
+const toEdit = (row: any, $index: number) => {
   row.flag = true;
   //v-else 切换结束就聚焦input
   nextTick(() => {
@@ -142,50 +143,23 @@ onBeforeMount(() => {
   <div>
     <el-card class="card-bottom">
       <div v-if="scene == 0">
-        <el-button
-          type="primary"
-          icon="Plus"
-          :disabled="!categoryStore.c3Id"
-          @click="addAttr"
-        >
+        <el-button type="primary" icon="Plus" :disabled="!categoryStore.c3Id" @click="addAttr">
           添加属性
         </el-button>
         <el-table border :data="attrArr">
-          <el-table-column
-            label="序号"
-            width="80px"
-            type="index"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            label="属性名称"
-            width="120px"
-            prop="attrName"
-          ></el-table-column>
+          <el-table-column label="序号" width="80px" type="index" align="center"></el-table-column>
+          <el-table-column label="属性名称" width="120px" prop="attrName"></el-table-column>
           <el-table-column label="属性值名称">
             <template #default="{ row }">
-              <el-tag
-                style="margin: 5px"
-                v-for="item in row.attrValueList"
-                :key="item.id"
-              >
+              <el-tag style="margin: 5px" v-for="item in row.attrValueList" :key="item.id">
                 {{ item.valueName }}
               </el-tag>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="120px">
             <template #default="{ row }">
-              <el-button
-                type="warning"
-                size="small"
-                icon="Edit"
-                @click="updateAttr(row)"
-              ></el-button>
-              <el-popconfirm
-                :title="`你确定要删除${row.attrName}吗`"
-                width="200px"
-                @confirm="deleteAttr"
-              >
+              <el-button type="warning" size="small" icon="Edit" @click="updateAttr(row)"></el-button>
+              <el-popconfirm :title="`你确定要删除${row.attrName}吗`" width="200px" @confirm="deleteAttr">
                 <template #reference>
                   <el-button type="danger" size="small" icon="Delete" />
                 </template>
@@ -200,50 +174,29 @@ onBeforeMount(() => {
         <div>
           <el-form :inline="true">
             <el-form-item label="属性名称">
-              <input
-                type="text"
-                v-model="attrParam.attrName"
-                placeholder="请输入名称"
-              />
+              <input type="text" v-model="attrParam.attrName" placeholder="请输入名称" />
             </el-form-item>
           </el-form>
         </div>
-        <el-button
-          type="primary"
-          @click="addAttrTable"
-          icon="Plus"
-          :disabled="!attrParam.attrName"
-        >
+        <el-button type="primary" @click="addAttrTable" icon="Plus" :disabled="!attrParam.attrName">
           添加属性
         </el-button>
         <el-button type="primary" @click="cancel">取消</el-button>
         <el-table border style="margin: 10px 0" :data="attrParam.attrValueList">
-          <el-table-column
-            label="序号"
-            width="80px"
-            type="index"
-            align="center"
-          ></el-table-column>
+          <el-table-column label="序号" width="80px" type="index" align="center"></el-table-column>
           <el-table-column label="属性名称">
             <!--            row wei attrParam.attrValueList[$index] -->
             <template #default="{ row, $index }">
-              <input
-                v-if="row.flag"
-                placeholder="请你输入属性值名称"
-                v-model="row.valueName"
-                :ref="(v) => (inputArr[$index] = v)"
-                @blur="toLook(row, $index)"
-              />
+              <input v-if="row.flag" placeholder="请你输入属性值名称" v-model="row.valueName" 
+                @blur="toLook(row, $index)" />
+                <!-- TODO  :ref="(v) => (inputArr[$index] = v)"-->
+                <!--  -->
               <div @click="toEdit(row, $index)">{{ row.valueName }}</div>
             </template>
           </el-table-column>
           <el-table-column label="属性值">
-            <template #default="{ row, $index }">
-              <el-button
-                type="danger"
-                @click="deleteArray($index)"
-                icon="Delete"
-              ></el-button>
+            <template #default="{ $index }">
+              <el-button type="danger" @click="deleteArray($index)" icon="Delete"></el-button>
             </template>
           </el-table-column>
           <el-button type="primary" @click="save" icon="Plus">保存</el-button>
@@ -256,8 +209,7 @@ onBeforeMount(() => {
 </template>
 
 <style scoped lang="scss">
-.card-top {
-}
+.card-top {}
 
 el-table {
   margin-top: 10px;
