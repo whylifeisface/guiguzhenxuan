@@ -187,8 +187,10 @@ onBeforeMount(() => {
           <el-table-column label="属性名称">
             <!--            row wei attrParam.attrValueList[$index] -->
             <template #default="{ row, $index }">
-              <input v-if="row.flag" placeholder="请你输入属性值名称" v-model="row.valueName" :ref="(v) => (inputArr[$index] = v)"
+              <input v-if="row.flag" placeholder="请你输入属性值名称" v-model="row.valueName" 
                 @blur="toLook(row, $index)" />
+                <!-- TODO  :ref="(v) => (inputArr[$index] = v)"-->
+                <!--  -->
               <div @click="toEdit(row, $index)">{{ row.valueName }}</div>
             </template>
           </el-table-column>
