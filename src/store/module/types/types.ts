@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
-import { CategoryObject } from "@/api/product/attr/type.ts";
+import { CategoryObject } from "@/api/product/attr/type";
 
 interface UserState {
   token: string | null;

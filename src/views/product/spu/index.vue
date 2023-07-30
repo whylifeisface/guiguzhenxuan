@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import SpuForm from "@/views/product/spu/spuForm.vue";
-import SkuForm from "@/views/product/spu/skuForm.vue";
 import Category from "@/components/Category/index.vue";
 import { ref, watch } from "vue";
-import { useCategoryStore } from "@/store/module/category.ts";
+import { useCategoryStore } from "@/store/module/category";
 import { reqDelete, reqHasSpu, reqSkuInfo } from "@/api/product/spu";
-import { Records, SkuData, SpuData } from "@/api/product/spu/type.ts";
+import { Records, SkuData, SpuData } from "@/api/product/spu/type";
 import { ElMessage } from "element-plus";
 //场景数据控制Category显示
 const scene = ref(1); // 0 显示   1 添加或修改 2 添加SKU结构
@@ -90,8 +89,12 @@ const SkuInfo = async (row: SpuData) => {
 };
 
 //删除按钮回调
-const deleteBtn = async (row, $index) => {
-  console.log("row", row);
+const deleteBtn = async (row: SpuData, $index: number) => {
+  // console.log("row", row);
+  if (row.id == undefined) {
+    ElMessage.error("null");
+    return;
+  }
   let response = await reqDelete(row.id);
   if (response.code == 200) {
     ElMessage.success("删除成功");

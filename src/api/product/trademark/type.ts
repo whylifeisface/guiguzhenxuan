@@ -1,4 +1,4 @@
-import { ResponseData } from "@/api/type.ts";
+import { ResponseData } from "@/api/type";
 
 //product 的类型
 export interface ResponseProduct extends ResponseData {

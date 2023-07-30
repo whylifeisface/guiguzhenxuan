@@ -1,4 +1,4 @@
-import { ResponseData } from "@/api/product/attr/type.ts";
+import { ResponseData } from "@/api/product/attr/type";
 
 export interface UserResponseData extends ResponseData {
   data: {

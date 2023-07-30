@@ -1,9 +1,9 @@
-import { request } from "@/utils/request.ts";
+import { request } from "@/utils/request";
 import {
   ResponseProduct,
   TradeMark,
   TradeMarkUpOrSaOrDel_Response,
-} from "@/api/product/trademark/type.ts";
+} from "@/api/product/trademark/type";
 
 enum API {
   TRADEMARK_URL = "admin/product/baseTrademark/",

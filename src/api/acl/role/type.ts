@@ -1,5 +1,5 @@
-import { ResponseData } from "@/api/product/attr/type.ts";
-import { Role } from "@/api/user/type.ts";
+import { ResponseData } from "@/api/product/attr/type";
+import { Role } from "@/api/user/type";
 
 export interface RoleListResponseData extends ResponseData {
   data: {

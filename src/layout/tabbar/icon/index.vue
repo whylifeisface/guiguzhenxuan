@@ -49,7 +49,7 @@ const predefineColors = ref([
   "#c7158577",
 ]);
 const value = ref(false);
-const changeDark = (value) => {
+const changeDark = (value: boolean) => {
   //获取html根节点
   let htmlElement = document.documentElement;
   if (value) {

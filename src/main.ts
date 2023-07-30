@@ -13,7 +13,7 @@ import globalComponent from "@/components/index";
 import { router } from "@/router";
 //@ts-ignore
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
-import "./permission.ts";
+import "./permission";
 // pinia
 import { pinia } from "@/store";
 //暗黑模式
@@ -22,7 +22,7 @@ const app = createApp(App);
 app.use(ElementPlus, {
   locale: zhCn,
 });
-import { isHasButton } from "@/directive/has.ts";
+import { isHasButton } from "@/directive/has";
 isHasButton(app);
 app.use(globalComponent).use(router).use(pinia);
 app.mount("#app");

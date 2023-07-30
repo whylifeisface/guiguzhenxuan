@@ -10,9 +10,8 @@ import {
   UpdateRoleResponseData,
 } from "@/api/acl/role";
 import { ElMessage, FormInstance, FormRules } from "element-plus";
-import { PermissionNode, Role } from "@/api/user/type.ts";
-import { useLayoutSettingStore } from "@/store/module/setting.ts";
-// import { Tree } from "element-plus/es/components/tree-v2/src/types";
+import { PermissionNode, Role } from "@/api/user/type";
+import { useLayoutSettingStore } from "@/store/module/setting";
 
 //----------------------------------搜索按钮组件
 let store = useLayoutSettingStore();
@@ -70,23 +69,25 @@ const hasRole = async () => {
 };
 
 //分配权限按钮回调
-const RoleCommit = async (id) => {
+const RoleCommit = async (id: number) => {
   curId.value = id;
   drawer.value = true;
   const check: number[] = [];
   let responseData = await PermissionListResponse(id);
   if (responseData.code == 200) {
-    const list: PermissionNode[] = responseData.data.map((value) => {
-      if (value.select) {
-        check.push(value.id);
-      }
-      return Object.assign(value, { label: value.name });
-    });
+    const list: PermissionNode[] = responseData.data.map(
+      (value: PermissionNode) => {
+        if (value.select) {
+          check.push(value.id);
+        }
+        return Object.assign(value, { label: value.name });
+      },
+    );
     if (data.length != 0) data = [];
     data.push(...list);
-    // ElMessage.success("成功");
+    ElMessage.success("成功");
   } else {
-    // ElMessage.error("失败");
+    ElMessage.error("失败");
   }
   //直接赋值不行
   await nextTick(() => {
@@ -94,12 +95,12 @@ const RoleCommit = async (id) => {
     checkedKey.value.push(...check);
   });
 };
-const editTable = (row) => {
+const editTable = (row: Role) => {
   dialogVisibility.value = true;
   Object.assign(role, row);
 };
 
-const deleteRow = async ($index) => {
+const deleteRow = async ($index: number) => {
   records.value.splice($index, 1);
   let response = await DeleteRoleRoleResponseData($index);
   if (response.code == 200) {

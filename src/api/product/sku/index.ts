@@ -1,6 +1,6 @@
-import { request } from "@/utils/request.ts";
-import { HasSKuResponseData } from "@/api/product/sku/type.ts";
-import { defaultResponse } from "@/api/product/spu/type.ts";
+import { request } from "@/utils/request";
+import { HasSKuResponseData } from "@/api/product/sku/type";
+import { defaultResponse } from "@/api/product/spu/type";
 
 enum API {
   //分页获取sku

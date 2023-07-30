@@ -1,4 +1,4 @@
-import { request } from "@/utils/request.ts";
+import { request } from "@/utils/request";
 import {
   AllTradeMarkResponseData,
   defaultResponse,
@@ -9,8 +9,8 @@ import {
   SkuInfoResponseData,
   SpuData,
   SpuHasImage,
-} from "@/api/product/spu/type.ts";
-// import { TradeMarkUpOrSaOrDel_Response } from "@/api/product/trademark/type.ts";
+} from "@/api/product/spu/type";
+// import { TradeMarkUpOrSaOrDel_Response } from "@/api/product/trademark/type";
 enum API {
   HASSPU_URL = "/admin/product/",
   ALL_TRADEMARK_URL = "/admin/product/baseTrademark/getTrademarkList", //获取全部品牌数据

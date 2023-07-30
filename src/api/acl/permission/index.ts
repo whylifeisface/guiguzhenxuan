@@ -1,7 +1,7 @@
-import { request } from "@/utils/request.ts";
-import { hasPermissionResponse } from "@/api/acl/permission/type.ts";
-import { defaultResponse } from "@/api/product/spu/type.ts";
-import { PermissionNode } from "@/api/user/type.ts";
+import { request } from "@/utils/request";
+import { hasPermissionResponse } from "@/api/acl/permission/type";
+import { defaultResponse } from "@/api/product/spu/type";
+import { PermissionNode } from "@/api/user/type";
 
 enum API {
   GET_PERMISSION = "/admin/acl/permission",

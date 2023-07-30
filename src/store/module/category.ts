@@ -1,7 +1,7 @@
 // 商品分类全局组件的小仓库
 import { defineStore } from "pinia";
 import { reqC1, reqC2, reqC3 } from "@/api/product/attr";
-import { CategorySate } from "@/store/module/types/types.ts";
+import { CategorySate } from "@/store/module/types/types";
 
 const useCategoryStore = defineStore("Category", {
   state: (): CategorySate => {

@@ -4,11 +4,11 @@ import { reqLogin, reqUserInfo, reqLogout } from "@/api";
 import type { LoginFormData } from "@/api/type";
 import { LoginResponseData } from "@/api/type";
 import { UserState } from "./types/types";
-import { GET_TOKEN, SET_TOKEN, REMOVE_TOKEN } from "@/utils/token.ts";
-//@ts-ignore
+import { GET_TOKEN, SET_TOKEN, REMOVE_TOKEN } from "@/utils/token";
+// @ts-ignore
 import cloneDeep from "lodash";
 //引入常量路由
-import { anyRoute, asyncRoute, constantRoute } from "@/router/route.ts";
+import { anyRoute, asyncRoute, constantRoute } from "@/router/route";
 import { router } from "@/router";
 //过滤异步路由
 function filterAsyncRoute(asyncRoute: any, routes: any) {

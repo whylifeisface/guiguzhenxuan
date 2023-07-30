@@ -1,7 +1,7 @@
-import { request } from "@/utils/request.ts";
-import { RoleListResponseData } from "@/api/acl/role/type.ts";
-import { PermissionListResponseData, Role } from "@/api/user/type.ts";
-import { defaultResponse } from "@/api/product/spu/type.ts";
+import { request } from "@/utils/request";
+import { RoleListResponseData } from "@/api/acl/role/type";
+import { PermissionListResponseData, Role } from "@/api/user/type";
+import { defaultResponse } from "@/api/product/spu/type";
 
 enum API {
   ROLE_LIST = "/admin/acl/role/",

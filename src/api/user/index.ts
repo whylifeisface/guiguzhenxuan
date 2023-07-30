@@ -1,11 +1,11 @@
-import { request } from "@/utils/request.ts";
+import { request } from "@/utils/request";
 import {
   UserAssignResponseData,
   UserAssignSaveData,
   UserResponseData,
   UserType,
-} from "@/api/user/type.ts";
-import { defaultResponse } from "@/api/product/spu/type.ts";
+} from "@/api/user/type";
+import { defaultResponse } from "@/api/product/spu/type";
 
 enum API {
   HAS_USER = "/admin/acl/user/",

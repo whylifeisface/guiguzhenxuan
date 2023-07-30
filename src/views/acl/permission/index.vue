@@ -5,7 +5,7 @@ import {
   DeletePermissionResponseData,
   hasPermissionResponseData,
 } from "@/api/acl/permission";
-import { PermissionNode } from "@/api/user/type.ts";
+import { PermissionNode } from "@/api/user/type";
 import { ElMessage } from "element-plus";
 
 //  table 组件实例
@@ -41,7 +41,7 @@ const add = () => {
   formParam.name = "";
   formParam.code = "";
 };
-const updatePermission = (row) => {
+const updatePermission = (row: PermissionNode) => {
   dialogVisibility.value = true;
   Object.assign(formParam, row);
 };

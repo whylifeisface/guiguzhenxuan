@@ -1,12 +1,12 @@
 //路由鉴权
-import { router } from "@/router/index.ts";
+import { router } from "@/router/index";
 //包内有样式
 // @ts-ignore
 import nprogress from "nprogress";
 import "nprogress/nprogress.css";
 import { pinia } from "@/store";
-import { useUserStore } from "@/store/module/user.ts";
-import { setting } from "@/setting.ts";
+import { useUserStore } from "@/store/module/user";
+import { setting } from "@/setting";
 //不要小圆圈
 nprogress.configure({ showSpinner: false });
 //没有大仓库会失败
@@ -67,4 +67,4 @@ router.afterEach((to) => {
   document.title = `${setting.title}-${to.meta.title}`;
 });
 
-// permission要写在main.ts文件里面
+// permission要写在main文件里面

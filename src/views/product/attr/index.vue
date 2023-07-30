@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Category from "@/components/Category/index.vue";
-import { useCategoryStore } from "@/store/module/category.ts";
+import { useCategoryStore } from "@/store/module/category";
 import { watch, ref, reactive, nextTick, onBeforeMount } from "vue";
 import { reqAddOrUpdateAttr, reqAttr, reqRemoveAttr } from "@/api/product/attr";
-import { Attr, AttrList } from "@/api/product/attr/type.ts";
+import { Attr, AttrList, AttrValue } from "@/api/product/attr/type";
 import { ElMessage, InputInstance } from "element-plus";
 
 const categoryStore = useCategoryStore();
@@ -74,10 +74,18 @@ const addAttrTable = () => {
 //新增和修改时候的保存按钮
 //
 const save = async () => {
-  attrParam.attrValueList.map((value) => {
+  attrParam.attrValueList.forEach((value: AttrValue) => {
     value.attrId = categoryStore.c3Id as number;
   });
-  const result = await reqAddOrUpdateAttr(attrParam);
+  let param: Attr = {
+    attrName: "",
+    categoryId: "",
+    categoryLevel: 0,
+    attrValueList: [],
+    orId: ""
+  };
+  Object.assign(param, attrParam);
+  const result = await reqAddOrUpdateAttr(param);
   if (result.code == 200) {
     scene.value = 0;
     ElMessage.success(attrParam.id ? "修改成功" : "属性添加成功");
@@ -187,10 +195,9 @@ onBeforeMount(() => {
           <el-table-column label="属性名称">
             <!--            row wei attrParam.attrValueList[$index] -->
             <template #default="{ row, $index }">
-              <input v-if="row.flag" placeholder="请你输入属性值名称" v-model="row.valueName" 
-                @blur="toLook(row, $index)" />
-                <!-- TODO  :ref="(v) => (inputArr[$index] = v)"-->
-                <!--  -->
+              <input v-if="row.flag" placeholder="请你输入属性值名称" v-model="row.valueName" @blur="toLook(row, $index)" />
+              <!-- TODO  :ref="(v) => (inputArr[$index] = v)"-->
+              <!--  -->
               <div @click="toEdit(row, $index)">{{ row.valueName }}</div>
             </template>
           </el-table-column>

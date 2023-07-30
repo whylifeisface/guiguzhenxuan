@@ -1,5 +1,5 @@
 //服务器全部接口返回的的数据类型
-import { ResponseData } from "@/api/type.ts";
+import { ResponseData } from "@/api/type";
 
 export interface spuImageType {
   id: number;
