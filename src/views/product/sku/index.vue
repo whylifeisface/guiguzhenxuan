@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { hasSKU, reqDeleteSku } from "@/api/product/sku";
-import { skuRecord } from "@/api/product/sku/type.ts";
+import { skuRecord } from "@/api/product/sku/type";
 import { ElMessage } from "element-plus";
 import { reqSpuInfo } from "@/api/product/spu";
-import { SpuImage } from "@/api/product/spu/type.ts";
+import { SpuImage } from "@/api/product/spu/type";
 
 const total = ref(0);
 const pageSize = ref(3);
@@ -58,51 +58,12 @@ const drawerShow = async (row: any) => {
   }
   drawer.value = true;
   drawerData.value.spuSaleAttrList.forEach((val: any) => {
-    // console.log(val," val");
     if (drawerData.value.spuSaleAttrValueList == undefined)
       drawerData.value.spuSaleAttrValueList = [];
     drawerData.value.spuSaleAttrValueList.push(...val.spuSaleAttrValueList);
   });
   console.log(drawerData, "drawerData");
 };
-// const drawerShow = async (row) => {
-//   // let responseData = await reqSpuImageList(row.id);
-//   // let attrResponseData = await reqSpuHasSaleAttr(row.id);
-//   const promiseAll = [
-//     await reqSpuImageList(row.spuId),
-//     await reqSpuHasSaleAttr(row.spuId),
-//   ];
-//   let responseData = await Promise.all(promiseAll);
-//   console.log(responseData, "responseData");
-//   responseData.map((value) => {
-//     if (value.code != 200 || value.data.length == 0) drawer.value = false;
-//     drawerData.value = row;
-//     console.log(row, " row");
-//     console.log('"inputText" in value.data[0]', "orId" in value.data[0]);
-//     if ("imgUrl" in value.data[0]) {
-//       // 在这里处理 data 对象
-//       imageList.value = value.data;
-//       console.log(imageList, "imageList");
-//     } else if ("spuSaleAttrValueList" in value.data[0]) {
-//       value.data.forEach((val) => {
-//         if ("spuSaleAttrValueList" in val) {
-//           if (drawerData.value.skuSaleAttrValueList == undefined)
-//             drawerData.value.skuSaleAttrValueList = [];
-//           drawerData.value.skuSaleAttrValueList.push(
-//             ...val.spuSaleAttrValueList,
-//           );
-//         }
-//       });
-//       console.log(
-//         drawerData.value.skuSaleAttrValueList,
-//         "drawerData.value.skuSaleAttrValueList",
-//       );
-//     }
-//   });
-//   drawer.value = true;
-//   drawerData.value = row;
-//   // console.log(drawerData.value, "drawerData");
-// };
 
 const deleteSku = async (row: any) => {
   console.log(row);

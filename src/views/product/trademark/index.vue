@@ -9,7 +9,7 @@ import type {
   Records,
   ResponseProduct,
   TradeMark,
-} from "@/api/product/trademark/type.ts";
+} from "@/api/product/trademark/type";
 import { ElMessage, FormInstance, FormRules, UploadProps } from "element-plus";
 
 //获得当前页面的数据 page 当前页面 size 要几个数据

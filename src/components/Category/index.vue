@@ -1,8 +1,7 @@
 <script setup lang="ts">
 //引入分类接口方法
-// import { reqC1 } from "@/api/product/attr/index.ts";
 import { onMounted } from "vue";
-import { useCategoryStore } from "@/store/module/category.ts";
+import { useCategoryStore } from "@/store/module/category";
 
 //当处于修改页面不能够点击el-select
 defineProps(["scene"]);

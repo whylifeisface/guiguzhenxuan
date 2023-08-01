@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useLayoutSettingStore } from "@/store/module/setting.ts";
+import { useLayoutSettingStore } from "@/store/module/setting";
 import { useRouter, useRoute } from "vue-router";
-import { useUserStore } from "@/store/module/user.ts";
+import { useUserStore } from "@/store/module/user";
 import { ref } from "vue";
 // 用户头像和名字
 let userStore = useUserStore();

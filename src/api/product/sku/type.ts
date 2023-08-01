@@ -1,4 +1,4 @@
-import { ResponseData } from "@/api/type.ts";
+import { ResponseData } from "@/api/type";
 
 export interface skuRecord {
   id: number;

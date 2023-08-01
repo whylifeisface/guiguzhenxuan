@@ -4,7 +4,7 @@ import {
   SaleAttrs,
   SpuData,
   SpuImage,
-} from "@/api/product/spu/type.ts";
+} from "@/api/product/spu/type";
 import {
   reqAddOrUpdateSpu,
   reqAllSaleAttr,
@@ -12,7 +12,7 @@ import {
   reqSpuHasSaleAttr,
   reqSpuImageList,
 } from "@/api/product/spu";
-import { TradeMark } from "@/api/product/trademark/type.ts";
+import { TradeMark } from "@/api/product/trademark/type";
 import { computed, ref } from "vue";
 import { ElMessage, UploadFile, UploadRawFile } from "element-plus";
 

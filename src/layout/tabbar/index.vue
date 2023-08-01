@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Breadcrumbe from "@/layout/tabbar/breadcrumb/index.vue";
-import { useLayoutSettingStore } from "@/store/module/setting.ts";
+import { useLayoutSettingStore } from "@/store/module/setting";
 import { Expand, Fold } from "@element-plus/icons-vue";
 import Icon from "@/layout/tabbar/icon/index.vue";
 

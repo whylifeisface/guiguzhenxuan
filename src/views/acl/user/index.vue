@@ -9,9 +9,9 @@ import {
   SearchUser,
   UpdateOrAddUser,
 } from "@/api/user";
-import { Role, UserAssignSaveData, UserType } from "@/api/user/type.ts";
+import { Role, UserAssignSaveData, UserType } from "@/api/user/type";
 import { ElMessage, FormInstance, TableInstance } from "element-plus";
-import { useLayoutSettingStore } from "@/store/module/setting.ts";
+import { useLayoutSettingStore } from "@/store/module/setting";
 
 const total = ref(1);
 const pageNo = ref(1);
@@ -60,9 +60,9 @@ const conFirmDeleteUser = async (row: any) => {
 // 批量删除按钮回调
 const DeleteMultipleUser = async () => {
   // deleteUserIdList.value =
-  const idList = deleteUserIdList.value.map((value) => {
-    if ("id" in value) return value.id;
-    else return value;
+  const idList: number[] = deleteUserIdList.value.map((value: number) => {
+    // if ("id" in value) return value.id;
+    return value;
   });
   //TODO delete请求如何携带payload
   let defaultResponse = await DeleteMultipleUserResponseData(idList);
@@ -72,8 +72,10 @@ const DeleteMultipleUser = async () => {
     ElMessage.error("删除失败");
   }
 };
-const tableSelectionChange = (selection) => {
-  // console.log(selection, "selection");
+/*
+selection element plus 里面的类型  
+*/
+const tableSelectionChange = (selection: any) => {
   //先清空数组
   deleteUserIdList.value = [];
   //解构数组 不解构对象
@@ -206,7 +208,6 @@ const checkAllChange = () => {
 // 对于选中哪几个职位(checkbox)
 const checkList = ref<Role[]>([]);
 const checkListChange = (value: string[]) => {
-  console.log("111");
   const length = value.length;
   checkAll.value = length === positionList.value.length;
   indeterminate.value = length > 0 && length < positionList.value.length;
@@ -214,15 +215,19 @@ const checkListChange = (value: string[]) => {
 //roleDrawer 确定按钮回调
 const confirmRole = async () => {
   roleDrawer.value = false;
-  const roleIdList = checkList.value.map((value) => {
-    return value.id;
-  });
-  // console.log(roleIdList, "roleIdList");
+  if (checkList.value.length == 0) {
+    return;
+  }
+  const roleIdList: number[] = [];
+
+  if (roleIdList.length == 0 || roleIdList[0] == undefined) {
+    return;
+  }
+  if (roleData.id == undefined) return;
   const data: UserAssignSaveData = {
     roleIdList: roleIdList,
-    userId: roleData.id as number,
+    userId: roleData.id,
   };
-  // console.log("data ", data);
   let response = await SaveUserRole(data);
   if (response.code == 200) {
     ElMessage.success("成功");

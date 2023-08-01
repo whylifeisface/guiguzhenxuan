@@ -4,6 +4,7 @@ import * as echarts from "echarts";
 import ChinaJson from "./china.json";
 
 const map = ref();
+//@ts-ignore
 echarts.registerMap("china", ChinaJson);
 onMounted(() => {
   let eChartsType = echarts.init(map.value);

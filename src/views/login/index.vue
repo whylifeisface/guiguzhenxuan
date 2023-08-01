@@ -99,7 +99,11 @@ const login = async () => {
 //     callBack(new Error("长度为5"));
 //   }
 // };
-const validatePassword = (_: any, value: any, callback: (error?: string | Error) => void) => {
+const validatePassword = (
+  _: any,
+  value: any,
+  callback: (error?: string | Error) => void,
+) => {
   if (value.length > 4) {
     callback();
   } else {

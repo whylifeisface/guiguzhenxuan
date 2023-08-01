@@ -3,8 +3,8 @@ import logo from "@/layout/logo/index.vue";
 import Menu from "@/layout/menu/index.vue";
 import Main from "@/layout/main/index.vue";
 import TabBar from "@/layout/tabbar/index.vue";
-import { useLayoutSettingStore } from "@/store/module/setting.ts";
-import { useUserStore } from "@/store/module/user.ts";
+import { useLayoutSettingStore } from "@/store/module/setting";
+import { useUserStore } from "@/store/module/user";
 
 const userStore = useUserStore();
 const layoutSettingStore = useLayoutSettingStore();

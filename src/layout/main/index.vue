@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLayoutSettingStore } from "@/store/module/setting.ts";
+import { useLayoutSettingStore } from "@/store/module/setting";
 import { ref, watch, nextTick } from "vue";
 //获取更新后的
 let layoutSettingStore = useLayoutSettingStore();

@@ -1,6 +1,6 @@
 // 分类相关数据类型
 
-import { TradeMarkUpOrSaOrDel_Response } from "@/api/product/trademark/type.ts";
+import { TradeMarkUpOrSaOrDel_Response } from "@/api/product/trademark/type";
 
 export interface ResponseData {
   message: string;

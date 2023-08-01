@@ -10,7 +10,7 @@ import {
   SkuData,
   SpuData,
   SpuImage,
-} from "@/api/product/spu/type.ts";
+} from "@/api/product/spu/type";
 import { reqAttr } from "@/api/product/attr";
 import { onBeforeUnmount, reactive, ref, unref } from "vue";
 import { ElMessage, TableInstance } from "element-plus";

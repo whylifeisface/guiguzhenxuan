@@ -13,7 +13,7 @@ import * as echarts from "echarts";
 import { onMounted, ref } from "vue";
 const charts = ref();
 onMounted(() => {
-  echarts.init(charts.value);
+  const echartsTypes = echarts.init(charts.value);
   const option = {
     title: {
       text: "游客消费",
@@ -49,7 +49,7 @@ onMounted(() => {
       },
     ],
   };
-  echarts.setOption(option);
+  echartsTypes.setOption(option);
 });
 </script>
 

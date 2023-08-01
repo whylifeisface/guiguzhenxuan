@@ -18,8 +18,8 @@
 <script setup lang="ts">
 //引入用户相关仓库获取当前用户的头像
 import { onMounted } from "vue";
-import { useUserStore } from "@/store/module/user.ts";
-import { getTime } from "@/utils/Time.ts";
+import { useUserStore } from "@/store/module/user";
+import { getTime } from "@/utils/Time";
 let userStore = useUserStore();
 let time = getTime();
 //一挂载就去请求

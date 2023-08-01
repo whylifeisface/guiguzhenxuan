@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     我是一级目录404
-    <img src="../../assets/image/error_images/404.png" alt="" />
+    <img src="../../assets/images/error_images/404.png" alt="" />
     <el-button type="primary" @click="goHome">首页</el-button>
   </div>
 </template>
